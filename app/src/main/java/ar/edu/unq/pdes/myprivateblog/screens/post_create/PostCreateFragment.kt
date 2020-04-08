@@ -1,6 +1,5 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_create
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doOnTextChanged
@@ -59,12 +58,13 @@ class PostCreateFragment : BaseFragment() {
 
         viewModel.cardColor.observe(viewLifecycleOwner, Observer {
             header_background.setBackgroundColor(it)
+            val itemsColor = ColorUtils.findTextColorGivenBackgroundColor(it)
+            title.setTextColor(itemsColor)
+            title.setHintTextColor(itemsColor)
+            btn_save.setColorFilter(itemsColor)
+            btn_close.setColorFilter(itemsColor)
+
             applyStatusBarStyle(it)
-            if (ColorUtils.luminance(it) > 0.7) {
-                title.setTextColor(context?.getColor(R.color.grey_darken_10) ?: Color.DKGRAY)
-            } else {
-                title.setTextColor(Color.WHITE)
-            }
         })
 
         title.doOnTextChanged { text, start, count, after ->

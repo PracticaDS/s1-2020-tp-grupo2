@@ -1,5 +1,6 @@
 package ar.edu.unq.pdes.myprivateblog.screens.posts_listing
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
+import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
-import timber.log.Timber
 
 class PostsListingFragment : BaseFragment() {
     override val layoutId = R.layout.fragment_posts_listing
@@ -29,22 +30,17 @@ class PostsListingFragment : BaseFragment() {
 
         context?.apply { applyStatusBarStyle(this.getColor(R.color.palette_pastel_yellow_02)) }
 
-
         create_new_post.setOnClickListener {
             findNavController().navigate(PostsListingFragmentDirections.navActionCreatePost())
         }
 
         viewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
-            postList.forEach { Timber.d("POST LOADED: ${it.title} (body in ${it.bodyPath})") }
-
             posts_list_recyclerview.adapter = PostsListAdapter(postList) {
                 findNavController().navigate(PostsListingFragmentDirections.navActionOpenDetail(it))
             }
 
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
-
-
     }
 }
 
@@ -68,6 +64,8 @@ class PostsListAdapter(
     override fun onBindViewHolder(holder: BlogEntryViewHolder, position: Int) {
         val blogEntry = postList[position]
         holder.title.text = blogEntry.title
+        holder.title.backgroundTintList = ColorStateList.valueOf(blogEntry.cardColor)
+        holder.title.setTextColor(ColorUtils.findTextColorGivenBackgroundColor(blogEntry.cardColor))
         holder.itemView.setOnClickListener { onItemClicked(blogEntry.uid) }
     }
 

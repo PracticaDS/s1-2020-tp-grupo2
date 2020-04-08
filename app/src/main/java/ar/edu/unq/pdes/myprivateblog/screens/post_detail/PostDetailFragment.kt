@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
+import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import kotlinx.android.synthetic.main.fragment_post_detail.*
@@ -44,6 +45,11 @@ class PostDetailFragment : BaseFragment() {
 
     fun renderBlogEntry(post: BlogEntry) {
         title.text = post.title
+
+        header_background.setBackgroundColor(post.cardColor)
+        applyStatusBarStyle(post.cardColor)
+        title.setTextColor(ColorUtils.findTextColorGivenBackgroundColor(post.cardColor))
+
         body.settings.javaScriptEnabled = false
         body.settings.setAppCacheEnabled(true)
         body.settings.cacheMode = WebSettings.LOAD_DEFAULT
