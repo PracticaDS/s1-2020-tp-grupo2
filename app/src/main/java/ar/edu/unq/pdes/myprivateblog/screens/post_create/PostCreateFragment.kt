@@ -27,9 +27,6 @@ class PostCreateFragment : BaseFragment() {
 
         viewModel.state.observe(viewLifecycleOwner, Observer {
             when (it) {
-                PostCreateViewModel.State.EDITING -> {
-                    // TODO
-                }
 
                 PostCreateViewModel.State.ERROR -> {
                     // TODO: manage error states
@@ -46,14 +43,6 @@ class PostCreateFragment : BaseFragment() {
                 else -> { /* Do nothing, should not happen*/
                 }
             }
-        })
-
-        viewModel.titleText.observe(viewLifecycleOwner, Observer {
-            //TODO: use when implementing the edit mode
-        })
-
-        viewModel.bodyText.observe(viewLifecycleOwner, Observer {
-            //TODO: use when implementing the edit mode
         })
 
         viewModel.cardColor.observe(viewLifecycleOwner, Observer {
