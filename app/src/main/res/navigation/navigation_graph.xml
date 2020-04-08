@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/postsListingFragment">
+
+    <fragment
+        android:id="@+id/postsListingFragment"
+        android:name="ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment"
+        android:label="PostsListingFragment"
+        tools:layout="@layout/fragment_posts_listing">
+        <action
+            android:id="@+id/nav_action_open_detail"
+            app:destination="@id/postDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/nav_action_create_post"
+            app:destination="@id/postCreateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/postEditFragment"
+        android:name="ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditFragment"
+        android:label="PostEditFragment"
+        tools:layout="@layout/fragment_post_edit" />
+
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="ar.edu.unq.pdes.myprivateblog.screens.post_detail.PostDetailFragment"
+        android:label="PostDetailFragment"
+        tools:layout="@layout/fragment_post_detail">
+        <action
+            android:id="@+id/nav_action_edit_post"
+            app:destination="@id/postEditFragment" />
+        <argument
+            android:name="postId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/postCreateFragment"
+        android:name="ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateFragment"
+        android:label="PostCreateFragment"
+        tools:layout="@layout/fragment_post_edit">
+
+        <action
+            android:id="@+id/nav_action_save_new_post"
+            app:popUpTo="@id/postCreateFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/postDetailFragment" />
+    </fragment>
+
+</navigation>
