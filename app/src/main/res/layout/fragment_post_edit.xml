@@ -5,9 +5,10 @@
     android:layout_height="match_parent">
 
     <View
+        android:id="@+id/header_background"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/palette_pastel_green_01"
         app:layout_constraintBottom_toBottomOf="@+id/title" />
 
     <ImageView
@@ -46,6 +47,12 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_close"
         app:layout_constraintWidth_min="120dp" />
 
+    <ar.edu.unq.pdes.myprivateblog.widgets.ColorPicker
+        android:id="@+id/color_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/header_background" />
+
     <org.wordpress.aztec.AztecText
         android:id="@+id/body"
         android:layout_width="match_parent"
@@ -58,7 +65,7 @@
         app:layout_constraintBottom_toTopOf="@+id/formatting_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/color_picker"
         app:textColor="#111" />
 
     <org.wordpress.aztec.source.SourceViewEditText
@@ -80,6 +87,7 @@
         android:id="@+id/formatting_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_toolbar_bar_height"
+        android:background="@color/palette_pastel_orange_01"
         android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent" />
 

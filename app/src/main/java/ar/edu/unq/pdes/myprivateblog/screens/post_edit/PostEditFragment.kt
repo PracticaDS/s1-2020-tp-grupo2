@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
 import ar.edu.unq.pdes.myprivateblog.R
 import kotlinx.android.synthetic.main.fragment_post_edit.*
@@ -63,6 +64,6 @@ class PostEditFragment : BaseFragment() {
     }
 
     private fun closeAndGoBack() {
-        getMainActivity().navigateToPostsListing()
+        findNavController().navigateUp()
     }
 }

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/color_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#ef9a9a" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#f48fb1" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#ce93d8" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#b39ddb" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#9fa8da" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#90caf9" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#81d4fa" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#80deea" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#80cbc4" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#a5d6a7" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#c5e1a5" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#e6ee9c" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#fff59d" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#ffe082" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#ffcc80" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#ffab91" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#bcaaa4" />
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_white_circle"
+            android:backgroundTint="#b0bec5" />
+
+    </LinearLayout>
+</HorizontalScrollView>

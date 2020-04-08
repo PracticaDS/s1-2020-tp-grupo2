@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/posts_list_recyclerview"
+        android:background="@color/palette_pastel_yellow_02"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:src="@drawable/ic_add"
+        android:backgroundTint="@color/palette_pastel_salmon_01"
+        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -1,5 +1,6 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_create
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doOnTextChanged
@@ -7,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
+import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import kotlinx.android.synthetic.main.fragment_post_edit.*
 import org.wordpress.aztec.Aztec
@@ -55,8 +57,18 @@ class PostCreateFragment : BaseFragment() {
             //TODO: use when implementing the edit mode
         })
 
+        viewModel.cardColor.observe(viewLifecycleOwner, Observer {
+            header_background.setBackgroundColor(it)
+            applyStatusBarStyle(it)
+            if (ColorUtils.luminance(it) > 0.7) {
+                title.setTextColor(context?.getColor(R.color.grey_darken_10) ?: Color.DKGRAY)
+            } else {
+                title.setTextColor(Color.WHITE)
+            }
+        })
+
         title.doOnTextChanged { text, start, count, after ->
-            viewModel.titleText.value = text.toString()
+            viewModel.titleText.postValue(text.toString())
         }
 
         body.doOnTextChanged { text, start, count, after ->
@@ -70,6 +82,10 @@ class PostCreateFragment : BaseFragment() {
 
         btn_close.setOnClickListener {
             closeAndGoBack()
+        }
+
+        color_picker.onColorSelectionListener = {
+            viewModel.cardColor.postValue(it)
         }
 
         context?.apply {

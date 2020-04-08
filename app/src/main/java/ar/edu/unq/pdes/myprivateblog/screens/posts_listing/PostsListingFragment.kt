@@ -25,6 +25,11 @@ class PostsListingFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getMainActivity().hideKeyboard()
+
+        context?.apply { applyStatusBarStyle(this.getColor(R.color.palette_pastel_yellow_02)) }
+
+
         create_new_post.setOnClickListener {
             findNavController().navigate(PostsListingFragmentDirections.navActionCreatePost())
         }
@@ -39,6 +44,7 @@ class PostsListingFragment : BaseFragment() {
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
 
+
     }
 }
 
@@ -52,7 +58,8 @@ class PostsListAdapter(
 ) : RecyclerView.Adapter<BlogEntryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlogEntryViewHolder {
-        val postViewItem = LayoutInflater.from(parent.context).inflate(R.layout.item_post, null)
+        val postViewItem =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
         return BlogEntryViewHolder(postViewItem)
     }
 

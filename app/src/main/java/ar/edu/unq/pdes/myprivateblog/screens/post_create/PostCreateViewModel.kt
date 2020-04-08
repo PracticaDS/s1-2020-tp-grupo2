@@ -1,6 +1,7 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_create
 
 import android.content.Context
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
@@ -24,6 +25,8 @@ class PostCreateViewModel @Inject constructor(
     val state = MutableLiveData(State.EDITING)
     val titleText = MutableLiveData("")
     val bodyText = MutableLiveData("")
+    val cardColor = MutableLiveData<Int>(Color.LTGRAY)
+
     var post = 0
 
     fun createPost() {
@@ -42,7 +45,8 @@ class PostCreateViewModel @Inject constructor(
             blogEntriesRepository.createBlogEntry(
                 BlogEntry(
                     title = titleText.value.toString(),
-                    bodyPath = it
+                    bodyPath = it,
+                    cardColor = cardColor.value!!
                 )
             )
 

@@ -1,6 +1,7 @@
 package ar.edu.unq.pdes.myprivateblog.data
 
 import android.content.Context
+import android.graphics.Color
 import androidx.room.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -47,7 +48,11 @@ data class BlogEntry(
     val deleted: Boolean = false,
 
     @ColumnInfo(name = "date")
-    val date: OffsetDateTime? = null
+    val date: OffsetDateTime? = null,
+
+    @ColumnInfo(name = "cardColor")
+    val cardColor: Int = Color.WHITE
+
 ) : Serializable
 
 @Dao
