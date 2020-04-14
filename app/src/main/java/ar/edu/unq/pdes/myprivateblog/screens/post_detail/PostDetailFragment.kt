@@ -75,7 +75,7 @@ class PostDetailFragment : BaseFragment() {
         applyStatusBarStyle(post.cardColor)
         title.setTextColor(ColorUtils.findTextColorGivenBackgroundColor(post.cardColor))
 
-        body.settings.javaScriptEnabled = false
+        body.settings.javaScriptEnabled = true
         body.settings.setAppCacheEnabled(true)
         body.settings.cacheMode = WebSettings.LOAD_DEFAULT
         body.webViewClient = WebViewClient()
