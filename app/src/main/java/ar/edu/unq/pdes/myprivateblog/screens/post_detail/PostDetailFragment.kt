@@ -1,9 +1,11 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_detail
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -25,6 +27,16 @@ class PostDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.state.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                PostDetailViewModel.State.DELETED -> {
+                    findNavController().navigateUp()
+                }
+                else -> { /* Do nothing, should not happen*/
+                }
+            }
+        })
+
         viewModel.fetchBlogEntry(args.postId)
 
         viewModel.post.observe(viewLifecycleOwner, Observer {
@@ -38,9 +50,22 @@ class PostDetailFragment : BaseFragment() {
         }
 
         btn_edit.setOnClickListener {
-            PostDetailFragmentDirections.navActionEditPost()
+            findNavController().navigate(PostDetailFragmentDirections.navActionEditPost(args.postId))
         }
 
+        btn_delete.setOnClickListener {
+            val title = viewModel.post.value!!.title
+            AlertDialog.Builder(context)
+                .setMessage("¿Seguro que quieres eliminar esta entrada?")
+                .setPositiveButton("ELIMINAR") { _, _ ->
+                    viewModel.deletePost()
+                    Toast.makeText(context, "Se eliminó la entrada: $title", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                .setNegativeButton("CANCELAR") { _, _ -> }
+                .create()
+                .show()
+        }
     }
 
     fun renderBlogEntry(post: BlogEntry) {

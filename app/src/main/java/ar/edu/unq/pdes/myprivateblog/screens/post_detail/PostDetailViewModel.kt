@@ -14,6 +14,12 @@ class PostDetailViewModel @Inject constructor(
     val context: Context
 ) : ViewModel() {
 
+    enum class State {
+        VIEW, DELETED
+    }
+
+    val state = MutableLiveData(State.VIEW)
+
     var post = MutableLiveData<BlogEntry?>()
 
     fun fetchBlogEntry(id: EntityID) {
@@ -24,5 +30,10 @@ class PostDetailViewModel @Inject constructor(
             .subscribe {
                 post.value = it
             }
+    }
+
+    fun deletePost() {
+        blogEntriesRepository.deleteBlogEntry(post.value!!).blockingAwait()
+        state.value = State.DELETED
     }
 }

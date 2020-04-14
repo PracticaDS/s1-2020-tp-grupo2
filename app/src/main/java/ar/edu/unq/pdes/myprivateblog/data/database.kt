@@ -36,10 +36,10 @@ data class BlogEntry(
     var uid: EntityID = 0,
 
     @ColumnInfo(name = "title")
-    val title: String = "",
+    var title: String = "",
 
     @ColumnInfo(name = "bodyPath")
-    val bodyPath: String? = null,
+    var bodyPath: String? = null,
 
     @ColumnInfo(name = "imagePath")
     val imagePath: String? = null,
@@ -51,7 +51,7 @@ data class BlogEntry(
     val date: OffsetDateTime? = null,
 
     @ColumnInfo(name = "cardColor")
-    val cardColor: Int = Color.WHITE
+    var cardColor: Int = Color.WHITE
 
 ) : Serializable
 
@@ -74,7 +74,6 @@ interface BlogEntriesDao {
 
     @Update
     fun update(entry: BlogEntry): Completable
-
 
     @Delete
     fun delete(entry: BlogEntry): Completable
