@@ -10,13 +10,13 @@ import androidx.navigation.fragment.navArgs
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
 import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
+import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import kotlinx.android.synthetic.main.fragment_post_edit.*
 import org.wordpress.aztec.Aztec
 import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.glideloader.GlideImageLoader
 import org.wordpress.aztec.glideloader.GlideVideoThumbnailLoader
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
-import timber.log.Timber
 
 class PostEditFragment : BaseFragment() {
     override val layoutId = R.layout.fragment_post_edit
@@ -28,7 +28,7 @@ class PostEditFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.fetchBlogEntry(args.postId) { renderBlogEntry() }
+        viewModel.fetchBlogEntry(args.postId)
 
         viewModel.state.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -44,24 +44,25 @@ class PostEditFragment : BaseFragment() {
         })
 
         viewModel.post.observe(viewLifecycleOwner, Observer {
-            updateCardColor(it!!.cardColor)
+            if (it != null)
+                renderBlogEntry(it)
+        })
+
+        viewModel.bodyText.observe(viewLifecycleOwner, Observer {
+            if (body.toFormattedHtml() != it)
+                body.fromHtml(it ?: "")
         })
 
         title.doOnTextChanged { text, start, count, after ->
-            val post = viewModel.post.value!!
-            post.title = text.toString()
-            viewModel.post.postValue(post)
+            viewModel.updateTitle(text.toString())
         }
 
         body.doOnTextChanged { text, start, count, after ->
             viewModel.bodyText.value = body.toFormattedHtml()
-            Timber.d(viewModel.bodyText.value)
         }
 
         color_picker.onColorSelectionListener = {
-            val post = viewModel.post.value!!
-            post.cardColor = it
-            viewModel.post.postValue(post)
+            viewModel.updateColor(it)
         }
 
         btn_save.setOnClickListener {
@@ -104,11 +105,10 @@ class PostEditFragment : BaseFragment() {
 
     }
 
-    private fun renderBlogEntry() {
-        val post = viewModel.post.value!!
+    private fun renderBlogEntry(post: BlogEntry) {
+        if (title.text.toString() != post.title)
+            title.setText(post.title)
         updateCardColor(post.cardColor)
-        title.setText(post.title)
-        body.fromHtml(viewModel.bodyText.value ?: "")
     }
 
     private fun updateCardColor(cardColor: Int) {

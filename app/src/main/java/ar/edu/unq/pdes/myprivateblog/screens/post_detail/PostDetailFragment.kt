@@ -56,10 +56,10 @@ class PostDetailFragment : BaseFragment() {
         btn_delete.setOnClickListener {
             val title = viewModel.post.value!!.title
             AlertDialog.Builder(context)
-                .setMessage("¿Seguro que quieres eliminar esta entrada?")
+                .setMessage("¿Seguro que quieres eliminar este post?")
                 .setPositiveButton("ELIMINAR") { _, _ ->
                     viewModel.deletePost()
-                    Toast.makeText(context, "Se eliminó la entrada: $title", Toast.LENGTH_SHORT)
+                    Toast.makeText(context, "Se eliminó el post: $title", Toast.LENGTH_SHORT)
                         .show()
                 }
                 .setNegativeButton("CANCELAR") { _, _ -> }

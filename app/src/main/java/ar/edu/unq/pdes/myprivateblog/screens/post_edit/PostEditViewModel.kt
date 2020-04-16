@@ -13,7 +13,7 @@ import java.io.OutputStreamWriter
 import javax.inject.Inject
 
 class PostEditViewModel @Inject constructor(
-    val blogEntriesRepository: BlogEntriesRepository,
+    private val blogEntriesRepository: BlogEntriesRepository,
     val context: Context
 ) : ViewModel() {
 
@@ -25,15 +25,13 @@ class PostEditViewModel @Inject constructor(
     var post = MutableLiveData<BlogEntry?>()
     val bodyText = MutableLiveData<String?>()
 
-    fun fetchBlogEntry(id: EntityID, onNext: (BlogEntry) -> Unit) {
+    fun fetchBlogEntry(id: EntityID) {
         val disposable = blogEntriesRepository
             .fetchById(id)
             .compose(RxSchedulers.flowableAsync())
             .subscribe {
                 post.value = it
-                val content = File(context.filesDir, it.bodyPath!!).readText()
-                bodyText.value = content
-                onNext(it)
+                bodyText.value = File(context.filesDir, it.bodyPath!!).readText()
             }
     }
 
@@ -50,6 +48,24 @@ class PostEditViewModel @Inject constructor(
         }.compose(RxSchedulers.flowableAsync()).subscribe {
             blogEntriesRepository.updateBlogEntry(post.value!!).blockingAwait()
             state.value = State.SUCCESS
+        }
+    }
+
+    private fun updateField(updater: (BlogEntry) -> BlogEntry) {
+        post.postValue(updater(post.value!!))
+    }
+
+    fun updateTitle(title: String) {
+        updateField {
+            it.title = title
+            it
+        }
+    }
+
+    fun updateColor(color: Int) {
+        updateField {
+            it.cardColor = color
+            it
         }
     }
 }
