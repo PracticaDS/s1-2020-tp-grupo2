@@ -60,11 +60,15 @@ android {
             dimension "version"
             applicationIdSuffix ".demo"
             versionNameSuffix "-demo"
+            targetSdkVersion 29
+            minSdkVersion 21
         }
         full {
             dimension "version"
             applicationIdSuffix ".full"
             versionNameSuffix "-full"
+            minSdkVersion 23
+            targetSdkVersion 29
         }
     }
 
