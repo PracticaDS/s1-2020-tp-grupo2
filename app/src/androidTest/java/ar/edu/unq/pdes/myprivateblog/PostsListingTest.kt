@@ -3,20 +3,18 @@ package ar.edu.unq.pdes.myprivateblog
 import android.graphics.Color
 import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.web.sugar.Web.onWebView
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import org.hamcrest.Description
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -26,102 +24,102 @@ class PostsListingTest {
     var activityRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
 
+    private fun onTitle() = onView(withId(R.id.title))
+    private fun onBody() = onView(withId(R.id.body))
+
+    private fun clickPickerColor(pickedColor: Int) =
+        onView(withTintColor(pickedColor)).perform(click())
+
+    private fun goToCreatePost() = onView(withId(R.id.create_new_post)).perform(click())
+    private fun clickSaveBtn() = onView(withId(R.id.btn_save)).perform(click())
+    private fun clickEditBtn() = onView(withId(R.id.btn_edit)).perform(click())
+    private fun clickBackBtn() = onView(withId(R.id.btn_back)).perform(click())
+    private fun clickDeleteBtn() = onView(withId(R.id.btn_delete)).perform(click())
+
+    private fun onTitle_type(text: String) = onTitle().perform(typeText(text))
+    private fun onBody_type(text: String) = onBody().perform(typeText(text))
+
+    private fun onBody_clearAndType(text: String) =
+        onBody().perform(clearText()).perform(typeText(text))
+
+    private fun onTitle_clearAndType(text: String) =
+        onTitle().perform(clearText()).perform(typeText(text))
+
+    private fun checkOnWebBody(bodyText: String) =
+        onWebView(withId(R.id.body)).check(withWebViewTextMatcher(bodyText))
+
+    private fun checkOnPostList(matcher: Matcher<View?>) =
+        onView(withId(R.id.posts_list_recyclerview)).check(matches(matcher))
+
+    private fun checkPostList_notHasText(text: String) =
+        checkOnPostList(not(hasItem(hasDescendant(withText(text)))))
+
+    private fun checkPostList_hasText(text: String, position: Int?) {
+        if (position == null) {
+            checkOnPostList(hasItem(hasDescendant(withText(text))))
+        } else {
+            checkOnPostList(atPosition(position, hasDescendant(withText(text))))
+        }
+    }
+
+    private fun checkTitle_hasText(text: String) = onTitle().check(matches(withText(text)))
+
     @Test
-    fun whenTappingOnNewPostFab_postCreationScreenShouldOpen() {
-
-        onView(withId(R.id.create_new_post))
-            .perform(click())
-
-
-        onView(withId(R.id.title))
-            .check(matches(withHint(R.string.hint_post_title)))
+    fun whenTappingOnNewPost_postCreationScreenShouldOpen() {
+        goToCreatePost()
+        onTitle().check(matches(withHint(R.string.hint_post_title)))
     }
 
     @Test
     fun whenCreatingPost_shouldNavigateToPostDetail() {
-        onView(withId(R.id.create_new_post))
-            .perform(click())
-
         val postTitle = "post1"
-
-        onView(withId(R.id.title))
-            .perform(typeText(postTitle))
-
         val bodyText = "This is the body"
-        onView(withId(R.id.body))
-            .perform(typeText(bodyText))
-
         val pickedColor = Color.parseColor("#b39ddb")
 
-        onView(withTintColor(pickedColor))
-            .perform(click())
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickPickerColor(pickedColor)
+        clickSaveBtn()
 
-        onView(withId(R.id.btn_save))
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.btn_save))
-            .perform(click())
-
-
-        onView(withId(R.id.title))
-            .check(matches(withText(postTitle)))
-
-//        onView(withId(R.id.body)).check(
-//            matches(withWebViewTextMatcher(bodyText))
-//        )
-
+        checkTitle_hasText(postTitle)
+        checkOnWebBody(bodyText)
     }
 
+    @Test
+    fun whenEditingPost_shouldModifyThePost() {
+        val postTitleToEdit = "postToEdit"
+        val postTitleEdited = "postEdited"
+        val bodyTextToEdit = "This is the body to edit"
+        val bodyTextEdited = "This is the body edited"
 
-}
+        goToCreatePost()
+        onTitle_type(postTitleToEdit)
+        onBody_type(bodyTextToEdit)
+        clickSaveBtn()
+        clickEditBtn()
+        onTitle_clearAndType(postTitleEdited)
+        onBody_clearAndType(bodyTextEdited)
+        clickSaveBtn()
 
-fun withTintColor(expectedColor: Int): Matcher<View?>? {
-    return object : BoundedMatcher<View?, View>(View::class.java) {
+        checkTitle_hasText(postTitleEdited)
+        checkOnWebBody(bodyTextEdited)
 
-        override fun describeTo(description: Description) {
-            description.appendText("Checking the matcher on received view: ")
-            description.appendText("with expectedStatus=$expectedColor")
-        }
+        clickBackBtn()
+        checkPostList_hasText(postTitleEdited, 0)
+    }
 
-        override fun matchesSafely(view: View): Boolean {
-            return view.backgroundTintList?.defaultColor == expectedColor
-        }
+    @Test
+    fun whenDeletingPost_shouldBeRemoved() {
+        val postTitle = "post"
+        val bodyText = "This is the body"
+
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickSaveBtn()
+        clickDeleteBtn()
+
+        checkPostList_notHasText(postTitle)
     }
 }
-//
-//fun withWebViewTextMatcher(expectedText: String): Matcher<View?>? {
-//    return object : BoundedMatcher<View?, WebView>(WebView::class.java) {
-//
-//        override fun describeTo(description: Description) {
-//            description.appendText("Checking the matcher on received view: ")
-//            description.appendText("with expectedStatus=$expectedText")
-//        }
-//
-//        override fun matchesSafely(webView: View): Boolean {
-//            val webViewBody: String = runBlocking {
-//                suspendCoroutine<String> { cont ->
-//                    webView.evaluateJavascript(
-//                        "(function() { return document.documentElement.innerText; })();"
-//                    ) {
-//                        cont.resume(it)
-//                    }
-//                }
-//            }
-//
-//            webView.backgroundTintList?.defaultColor
-//
-//
-//            val expected = "\"" + expectedText + "\""
-//            return expected == webViewBody
-//        }
-//
-//        suspend fun fetchWebViewContent(webView: WebView): String = suspendCoroutine { cont ->
-//            webView.evaluateJavascript(
-//                "(function() { return document.documentElement.innerText; })();"
-//            ) {
-//                cont.resume(it)
-//            }
-//        }
-//
-//    }
-//}

@@ -10,7 +10,7 @@ import ar.edu.unq.pdes.myprivateblog.rx.RxSchedulers
 import javax.inject.Inject
 
 class PostDetailViewModel @Inject constructor(
-    val blogEntriesRepository: BlogEntriesRepository,
+    private val blogEntriesRepository: BlogEntriesRepository,
     val context: Context
 ) : ViewModel() {
 
@@ -23,7 +23,6 @@ class PostDetailViewModel @Inject constructor(
     var post = MutableLiveData<BlogEntry?>()
 
     fun fetchBlogEntry(id: EntityID) {
-
         val disposable = blogEntriesRepository
             .fetchById(id)
             .compose(RxSchedulers.flowableAsync())
@@ -33,7 +32,14 @@ class PostDetailViewModel @Inject constructor(
     }
 
     fun deletePost() {
-        blogEntriesRepository.deleteBlogEntry(post.value!!).blockingAwait()
+        val aPost = post.value!!
+        post.value = aPost.delete()
+        blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
         state.value = State.DELETED
+    }
+
+    fun cancelDeletePost() {
+        val aPost = post.value!!.restore()
+        blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
     }
 }

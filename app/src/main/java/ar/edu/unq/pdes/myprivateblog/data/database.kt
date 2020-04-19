@@ -45,7 +45,7 @@ data class BlogEntry(
     val imagePath: String? = null,
 
     @ColumnInfo(name = "is_deleted")
-    val deleted: Boolean = false,
+    var deleted: Boolean = false,
 
     @ColumnInfo(name = "date")
     val date: OffsetDateTime? = null,
@@ -53,12 +53,22 @@ data class BlogEntry(
     @ColumnInfo(name = "cardColor")
     var cardColor: Int = Color.WHITE
 
-) : Serializable
+) : Serializable {
+    fun delete(): BlogEntry {
+        deleted = true
+        return this
+    }
+
+    fun restore(): BlogEntry {
+        deleted = false
+        return this
+    }
+}
 
 @Dao
 interface BlogEntriesDao {
-    @Query("SELECT * FROM BlogEntries ORDER BY date DESC")
-    fun getAll(): Flowable<List<BlogEntry>>
+    @Query("SELECT * FROM BlogEntries WHERE is_deleted = :deleted ORDER BY date DESC")
+    fun getAll(deleted: Boolean = false): Flowable<List<BlogEntry>>
 
     @Query("SELECT * FROM BlogEntries WHERE uid = :entryId LIMIT 1")
     fun loadById(entryId: EntityID): Flowable<BlogEntry>
