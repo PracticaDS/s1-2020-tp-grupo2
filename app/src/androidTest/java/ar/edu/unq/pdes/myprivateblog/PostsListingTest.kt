@@ -46,7 +46,8 @@ class PostsListingTest {
         onTitle().perform(clearText()).perform(typeText(text))
 
     private fun checkOnWebBody(bodyText: String) =
-        onWebView(withId(R.id.body)).check(withWebViewTextMatcher(bodyText))
+        onWebView(withId(R.id.body))
+            .check(withWebViewTextMatcher("<head></head><body>$bodyText</body>"))
 
     private fun checkOnPostList(matcher: Matcher<View?>) =
         onView(withId(R.id.posts_list_recyclerview)).check(matches(matcher))
@@ -54,7 +55,7 @@ class PostsListingTest {
     private fun checkPostList_notHasText(text: String) =
         checkOnPostList(not(hasItem(hasDescendant(withText(text)))))
 
-    private fun checkPostList_hasText(text: String, position: Int?) {
+    private fun checkPostList_hasText(text: String, position: Int? = null) {
         if (position == null) {
             checkOnPostList(hasItem(hasDescendant(withText(text))))
         } else {
@@ -106,7 +107,7 @@ class PostsListingTest {
         checkOnWebBody(bodyTextEdited)
 
         clickBackBtn()
-        checkPostList_hasText(postTitleEdited, 0)
+        checkPostList_hasText(postTitleEdited)
     }
 
     @Test

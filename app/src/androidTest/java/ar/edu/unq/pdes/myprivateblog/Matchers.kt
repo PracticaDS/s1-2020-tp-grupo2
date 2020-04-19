@@ -63,7 +63,7 @@ fun withTintColor(expectedColor: Int) =
 fun withWebViewTextMatcher(expectedText: String): WebAssertion<String> =
     WebViewAssertions.webMatches(
         Atoms.script(
-            "return document.documentElement.innerText;",
+            "return document.documentElement.innerHTML;",
             Atoms.castOrDie(String::class.java)
         ),
         CoreMatchers.`is`(expectedText)
