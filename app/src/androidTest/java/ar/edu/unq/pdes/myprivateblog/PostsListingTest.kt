@@ -66,6 +66,10 @@ class PostsListingTest {
 
     private fun checkTitle_hasText(text: String) = onTitle().check(matches(withText(text)))
 
+    private fun checkAmountPosts(amountPosts: Int) =
+        onView(ViewMatchers.withId(R.id.posts_list_recyclerview))
+            .check(hasItemCount(amountPosts));
+
     @Test
     fun whenTappingOnNewPost_postCreationScreenShouldOpen() {
         goToCreatePost()
@@ -147,27 +151,14 @@ class PostsListingTest {
 
     @Test
     fun whenTappingOnNewPost_ShouldCreatePostAndShouldAddAnItemToTheList() {
-        val amountPost = 0;
-        val newTitle = "Nuevo post"
-        val textBody = "Esta es una prueba"
+        val postTitle = "Nuevo post"
+        val bodyText = "Esta es una prueba"
 
-        onView(withId(R.id.create_new_post))
-            .perform(click())
-
-        onView(withId(R.id.title))
-            .perform(typeText(newTitle))
-
-        onView(withId(R.id.body))
-            .perform(typeText(textBody))
-
-        onView(withId(R.id.btn_save))
-            .perform(click())
-
-        onView(withId(R.id.btn_back))
-            .perform(click())
-
-        onView(ViewMatchers.withId(R.id.posts_list_recyclerview))
-            .check(hasItemCount(amountPost + 1));
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickSaveBtn()
+        clickBackBtn()
+        checkAmountPosts(1)
     }
-
 }
