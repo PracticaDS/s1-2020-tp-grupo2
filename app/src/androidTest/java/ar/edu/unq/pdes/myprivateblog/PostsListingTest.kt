@@ -36,6 +36,7 @@ class PostsListingTest {
     private fun clickEditBtn() = onView(withId(R.id.btn_edit)).perform(click())
     private fun clickBackBtn() = onView(withId(R.id.btn_back)).perform(click())
     private fun clickDeleteBtn() = onView(withId(R.id.btn_delete)).perform(click())
+    private fun clickCloseBtn() = onView(withId(R.id.btn_close)).perform(click())
 
     private fun onTitle_type(text: String) = onTitle().perform(typeText(text))
     private fun onBody_type(text: String) = onBody().perform(typeText(text))
@@ -159,6 +160,20 @@ class PostsListingTest {
         onBody_type(bodyText)
         clickSaveBtn()
         clickBackBtn()
+        checkPostList_hasText(postTitle, 0)
         checkAmountPosts(1)
+    }
+
+    @Test
+    fun whenTappingOnNewPostAndClosingWithoutSaving_theNumberOfItemsOnTheListPostsShouldNotChange() {
+        val postTitle = "Mi nuevo post"
+        val bodyText = "Blah blah"
+
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickCloseBtn()
+        checkPostList_notHasText(postTitle)
+        checkAmountPosts(0)
     }
 }
