@@ -12,6 +12,7 @@ import ar.edu.unq.pdes.myprivateblog.BaseFragment
 import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import java.io.File
 
@@ -24,6 +25,16 @@ class PostDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.state.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                PostDetailViewModel.State.DELETED -> {
+                    findNavController().navigateUp()
+                }
+                else -> { /* Do nothing, should not happen*/
+                }
+            }
+        })
 
         viewModel.fetchBlogEntry(args.postId)
 
@@ -38,17 +49,27 @@ class PostDetailFragment : BaseFragment() {
         }
 
         btn_edit.setOnClickListener {
-            PostDetailFragmentDirections.navActionEditPost()
+            findNavController().navigate(PostDetailFragmentDirections.navActionEditPost(args.postId))
         }
 
+        btn_delete.setOnClickListener {
+            val title = viewModel.post.value?.title ?: ""
+            viewModel.deletePost()
+            Snackbar.make(it, getString(R.string.deleted_post, title), Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo) { viewModel.cancelDeletePost() }
+                .show()
+        }
     }
 
     fun renderBlogEntry(post: BlogEntry) {
         title.text = post.title
-
         header_background.setBackgroundColor(post.cardColor)
         applyStatusBarStyle(post.cardColor)
-        title.setTextColor(ColorUtils.findTextColorGivenBackgroundColor(post.cardColor))
+        val itemsColor = ColorUtils.findTextColorGivenBackgroundColor(post.cardColor)
+        title.setTextColor(itemsColor)
+        btn_edit.setColorFilter(itemsColor)
+        btn_back.setColorFilter(itemsColor)
+        btn_delete.setColorFilter(itemsColor)
 
         body.settings.javaScriptEnabled = true
         body.settings.setAppCacheEnabled(true)

@@ -35,10 +35,10 @@ class PostsListingFragment : BaseFragment() {
         }
 
         viewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
+            layout_empty.visibility = if (postList.isEmpty()) View.VISIBLE else View.INVISIBLE
             posts_list_recyclerview.adapter = PostsListAdapter(postList) {
                 findNavController().navigate(PostsListingFragmentDirections.navActionOpenDetail(it))
             }
-
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
     }

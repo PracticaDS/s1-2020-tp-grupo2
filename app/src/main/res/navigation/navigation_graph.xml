@@ -26,7 +26,11 @@
         android:id="@+id/postEditFragment"
         android:name="ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditFragment"
         android:label="PostEditFragment"
-        tools:layout="@layout/fragment_post_edit" />
+        tools:layout="@layout/fragment_post_edit">
+        <argument
+            android:name="postId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/postDetailFragment"
@@ -35,7 +39,11 @@
         tools:layout="@layout/fragment_post_detail">
         <action
             android:id="@+id/nav_action_edit_post"
-            app:destination="@id/postEditFragment" />
+            app:destination="@id/postEditFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="postId"
             app:argType="integer" />

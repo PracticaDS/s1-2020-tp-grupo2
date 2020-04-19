@@ -15,7 +15,6 @@ import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.glideloader.GlideImageLoader
 import org.wordpress.aztec.glideloader.GlideVideoThumbnailLoader
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
-import timber.log.Timber
 
 class PostCreateFragment : BaseFragment() {
     override val layoutId = R.layout.fragment_post_edit
@@ -62,7 +61,6 @@ class PostCreateFragment : BaseFragment() {
 
         body.doOnTextChanged { text, start, count, after ->
             viewModel.bodyText.value = body.toFormattedHtml()
-            Timber.d(viewModel.bodyText.value)
         }
 
         btn_save.setOnClickListener {
