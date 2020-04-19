@@ -176,4 +176,32 @@ class PostsListingTest {
         checkPostList_notHasText(postTitle)
         checkAmountPosts(0)
     }
+
+    @Test
+    fun whenTappingOnNewPost_ShouldCreatePostAndShouldAddAnItemToTheEndOfTheList() {
+        val amountPost = 0;
+        val postTitle1 = "Post 1"
+        val postTextBody1 = "This is the body of post 1"
+
+        val postTitle2 = "Post 2"
+        val postTextBody2 = "This is the body of post 2"
+
+        //create post 1
+        goToCreatePost()
+        onTitle_type(postTitle1)
+        onBody_type(postTextBody1)
+        clickSaveBtn()
+        clickBackBtn()
+
+        //create post 2
+        goToCreatePost()
+        onTitle_type(postTitle2)
+        onBody_type(postTextBody2)
+        clickSaveBtn()
+        clickBackBtn()
+
+        checkAmountPosts(2)
+        checkPostList_hasText(postTitle1, 0)
+        checkPostList_hasText(postTitle2, 1)
+    }
 }
