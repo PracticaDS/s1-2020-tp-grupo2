@@ -204,4 +204,12 @@ class PostsListingTest {
         checkPostList_hasText(postTitle1, 0)
         checkPostList_hasText(postTitle2, 1)
     }
+
+    @Test
+    fun whenTheAppStarts_ShouldShowTheBottonToCreateNewPostAndAnImage() {
+        onView(withId(R.id.text_empty_list))
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.create_new_post))
+            .check(matches(isDisplayed()))
+    }
 }
