@@ -223,5 +223,25 @@ class PostsListingTest {
         onView(withId(R.id.color_picker)).check(matches(isDisplayed()));
         onView(withId(R.id.formatting_toolbar)).check(matches(isDisplayed()));
     }
+    @Test
+    fun whenCreatingPost_shouldNavigateToPostDetailButtonsMustBeVisible() {
+        val postTitle = "post1"
+        val bodyText = "This is the body"
+        val pickedColor = Color.parseColor("#b39ddb")
+
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickPickerColor(pickedColor)
+        clickSaveBtn()
+
+        onView(withId(R.id.btn_back)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_edit)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_delete)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.body)).check(matches(isDisplayed()));
+
+    }
 
 }
