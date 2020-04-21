@@ -212,4 +212,16 @@ class PostsListingTest {
         onView(withId(R.id.create_new_post))
             .check(matches(isDisplayed()))
     }
+    @Test
+    fun whenCreatingPost_shouldButtonsMustBeVisible() {
+
+        goToCreatePost()
+        onView(withId(R.id.btn_save)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_close)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.body)).check(matches(isDisplayed()));
+        onView(withId(R.id.color_picker)).check(matches(isDisplayed()));
+        onView(withId(R.id.formatting_toolbar)).check(matches(isDisplayed()));
+    }
+
 }
