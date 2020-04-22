@@ -93,63 +93,6 @@ class PostsListingTest {
         checkOnWebBody(bodyText)
     }
 
-    /*
-    @Test //Texto en negrita
-    fun whenTappingOnBoldButton_textBodyShouldInBoldStyle() {
-
-        onView(withId(R.id.create_new_post))
-            .perform(click())
-
-        onView(withId(R.id.format_bar_button_bold))
-            .perform(click())
-
-        val bodyText = "post1"
-
-        onView(withId(R.id.body))
-            .perform(typeText(bodyText))
-
-        onView(withId(R.id.body))
-            .check(matches(withBoldStyle(R.id.body)));
-    }
-
-    @Test
-    fun whenEditingPost_shouldModifyThePost() {
-        val postTitleToEdit = "postToEdit"
-        val postTitleEdited = "postEdited"
-        val bodyTextToEdit = "This is the body to edit"
-        val bodyTextEdited = "This is the body edited"
-
-        goToCreatePost()
-        onTitle_type(postTitleToEdit)
-        onBody_type(bodyTextToEdit)
-        clickSaveBtn()
-        clickEditBtn()
-        onTitle_clearAndType(postTitleEdited)
-        onBody_clearAndType(bodyTextEdited)
-        clickSaveBtn()
-
-        checkTitle_hasText(postTitleEdited)
-        checkOnWebBody(bodyTextEdited)
-
-        clickBackBtn()
-        checkPostList_hasText(postTitleEdited)
-    }
-
-    @Test
-    fun whenDeletingPost_shouldBeRemoved() {
-        val postTitle = "post"
-        val bodyText = "This is the body"
-
-        goToCreatePost()
-        onTitle_type(postTitle)
-        onBody_type(bodyText)
-        clickSaveBtn()
-        clickDeleteBtn()
-
-        checkPostList_notHasText(postTitle)
-    }
-    */
-
     @Test
     fun whenTappingOnNewPost_ShouldCreatePostAndShouldAddAnItemToTheList() {
         val postTitle = "Nuevo post"
@@ -212,6 +155,7 @@ class PostsListingTest {
         onView(withId(R.id.create_new_post))
             .check(matches(isDisplayed()))
     }
+
     @Test
     fun whenCreatingPost_shouldButtonsMustBeVisible() {
 
@@ -223,6 +167,7 @@ class PostsListingTest {
         onView(withId(R.id.color_picker)).check(matches(isDisplayed()));
         onView(withId(R.id.formatting_toolbar)).check(matches(isDisplayed()));
     }
+
     @Test
     fun whenCreatingPost_shouldNavigateToPostDetailButtonsMustBeVisible() {
         val postTitle = "post1"
