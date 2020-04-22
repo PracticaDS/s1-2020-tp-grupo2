@@ -1,18 +1,12 @@
 package ar.edu.unq.pdes.myprivateblog
 
 import android.graphics.Color
-import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.web.sugar.Web.onWebView
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,52 +18,6 @@ class PostsListingTest {
     @get:Rule
     var activityRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
-
-    private fun onTitle() = onView(withId(R.id.title))
-    private fun onBody() = onView(withId(R.id.body))
-
-    private fun clickPickerColor(pickedColor: Int) =
-        onView(withTintColor(pickedColor)).perform(click())
-
-    private fun goToCreatePost() = onView(withId(R.id.create_new_post)).perform(click())
-    private fun clickSaveBtn() = onView(withId(R.id.btn_save)).perform(click())
-    private fun clickEditBtn() = onView(withId(R.id.btn_edit)).perform(click())
-    private fun clickBackBtn() = onView(withId(R.id.btn_back)).perform(click())
-    private fun clickDeleteBtn() = onView(withId(R.id.btn_delete)).perform(click())
-    private fun clickCloseBtn() = onView(withId(R.id.btn_close)).perform(click())
-
-    private fun onTitle_type(text: String) = onTitle().perform(typeText(text))
-    private fun onBody_type(text: String) = onBody().perform(typeText(text))
-
-    private fun onBody_clearAndType(text: String) =
-        onBody().perform(clearText()).perform(typeText(text))
-
-    private fun onTitle_clearAndType(text: String) =
-        onTitle().perform(clearText()).perform(typeText(text))
-
-    private fun checkOnWebBody(bodyText: String) =
-        onWebView(withId(R.id.body))
-            .check(withWebViewTextMatcher("<head></head><body>$bodyText</body>"))
-
-    private fun checkOnPostList(matcher: Matcher<View?>) =
-        onView(withId(R.id.posts_list_recyclerview)).check(matches(matcher))
-
-    private fun checkPostList_notHasText(text: String) =
-        checkOnPostList(not(hasItem(hasDescendant(withText(text)))))
-
-    private fun checkPostList_hasText(text: String, position: Int? = null) {
-        if (position == null) {
-            checkOnPostList(hasItem(hasDescendant(withText(text))))
-        } else {
-            checkOnPostList(atPosition(position, hasDescendant(withText(text))))
-        }
-    }
-
-    private fun checkTitle_hasText(text: String) = onTitle().check(matches(withText(text)))
-
-    private fun checkAmountPosts(amountPosts: Int) =
-        onView(ViewMatchers.withId(R.id.posts_list_recyclerview))
-            .check(hasItemCount(amountPosts));
 
     @Test
     fun whenTappingOnNewPost_postCreationScreenShouldOpen() {
