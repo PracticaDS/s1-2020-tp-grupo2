@@ -16,9 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import java.io.File
 
-class PostDetailFragment : BaseFragment() {
-    override val layoutId = R.layout.fragment_post_detail
-
+class PostDetailFragment : BaseFragment(R.layout.fragment_post_detail) {
     private val viewModel by viewModels<PostDetailViewModel> { viewModelFactory }
 
     private val args: PostDetailFragmentArgs by navArgs()
@@ -29,7 +27,7 @@ class PostDetailFragment : BaseFragment() {
         viewModel.state.observe(viewLifecycleOwner, Observer {
             when (it) {
                 PostDetailViewModel.State.DELETED -> {
-                    findNavController().navigateUp()
+                    closeAndGoBack()
                 }
                 else -> { /* Do nothing, should not happen*/
                 }
@@ -39,19 +37,12 @@ class PostDetailFragment : BaseFragment() {
         viewModel.fetchBlogEntry(args.postId)
 
         viewModel.post.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                renderBlogEntry(it)
-            }
+            if (it != null) renderBlogEntry(it)
         })
-
-        btn_back.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
+        btn_back.setOnClickListener { closeAndGoBack() }
         btn_edit.setOnClickListener {
             findNavController().navigate(PostDetailFragmentDirections.navActionEditPost(args.postId))
         }
-
         btn_delete.setOnClickListener {
             val title = viewModel.post.value?.title ?: ""
             viewModel.deletePost()
@@ -61,7 +52,7 @@ class PostDetailFragment : BaseFragment() {
         }
     }
 
-    fun renderBlogEntry(post: BlogEntry) {
+    private fun renderBlogEntry(post: BlogEntry) {
         title.text = post.title
         header_background.setBackgroundColor(post.cardColor)
         applyStatusBarStyle(post.cardColor)

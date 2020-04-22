@@ -3,6 +3,7 @@ package ar.edu.unq.pdes.myprivateblog
 import android.graphics.Color
 import android.view.View
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -30,20 +31,21 @@ class PostsListingTest {
     private fun clickPickerColor(pickedColor: Int) =
         onView(withTintColor(pickedColor)).perform(click())
 
-    private fun goToCreatePost() = onView(withId(R.id.create_new_post)).perform(click())
-    private fun clickSaveBtn() = onView(withId(R.id.btn_save)).perform(click())
-    private fun clickEditBtn() = onView(withId(R.id.btn_edit)).perform(click())
-    private fun clickBackBtn() = onView(withId(R.id.btn_back)).perform(click())
-    private fun clickDeleteBtn() = onView(withId(R.id.btn_delete)).perform(click())
+    private fun clickIn(id: Int) = onView(withId(id)).perform(click())
+    private fun goToCreatePost() = clickIn(R.id.create_new_post)
+    private fun clickSaveBtn() = clickIn(R.id.btn_save)
+    private fun clickEditBtn() = clickIn(R.id.btn_edit)
+    private fun clickBackBtn() = clickIn(R.id.btn_back)
+    private fun clickDeleteBtn() = clickIn(R.id.btn_delete)
 
     private fun onTitle_type(text: String) = onTitle().perform(typeText(text))
     private fun onBody_type(text: String) = onBody().perform(typeText(text))
 
-    private fun onBody_clearAndType(text: String) =
-        onBody().perform(clearText()).perform(typeText(text))
+    private fun clearAndTypeOn(view: ViewInteraction, text: String) =
+        view.perform(clearText()).perform(typeText(text))
 
-    private fun onTitle_clearAndType(text: String) =
-        onTitle().perform(clearText()).perform(typeText(text))
+    private fun onBody_clearAndType(text: String) = clearAndTypeOn(onBody(), text)
+    private fun onTitle_clearAndType(text: String) = clearAndTypeOn(onTitle(), text)
 
     private fun checkOnWebBody(bodyText: String) =
         onWebView(withId(R.id.body))

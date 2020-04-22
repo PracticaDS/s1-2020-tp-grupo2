@@ -16,9 +16,7 @@ import org.wordpress.aztec.glideloader.GlideImageLoader
 import org.wordpress.aztec.glideloader.GlideVideoThumbnailLoader
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 
-class PostCreateFragment : BaseFragment() {
-    override val layoutId = R.layout.fragment_post_edit
-
+class PostCreateFragment : BaseFragment(R.layout.fragment_post_edit) {
     private val viewModel by viewModels<PostCreateViewModel> { viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,19 +24,14 @@ class PostCreateFragment : BaseFragment() {
 
         viewModel.state.observe(viewLifecycleOwner, Observer {
             when (it) {
-
                 PostCreateViewModel.State.ERROR -> {
                     // TODO: manage error states
                 }
-
                 PostCreateViewModel.State.SUCCESS -> {
                     findNavController().navigate(
-                        PostCreateFragmentDirections.navActionSaveNewPost(
-                            viewModel.post
-                        )
+                        PostCreateFragmentDirections.navActionSaveNewPost(viewModel.post)
                     )
                 }
-
                 else -> { /* Do nothing, should not happen*/
                 }
             }
@@ -58,57 +51,31 @@ class PostCreateFragment : BaseFragment() {
         title.doOnTextChanged { text, start, count, after ->
             viewModel.titleText.postValue(text.toString())
         }
-
         body.doOnTextChanged { text, start, count, after ->
             viewModel.bodyText.value = body.toFormattedHtml()
         }
-
-        btn_save.setOnClickListener {
-            viewModel.createPost()
-        }
-
-        btn_close.setOnClickListener {
-            closeAndGoBack()
-        }
-
+        btn_save.setOnClickListener { viewModel.createPost() }
+        btn_close.setOnClickListener { closeAndGoBack() }
         color_picker.onColorSelectionListener = {
             viewModel.cardColor.postValue(it)
         }
 
         context?.apply {
             Aztec.with(body, source, formatting_toolbar, object : IAztecToolbarClickListener {
-                override fun onToolbarCollapseButtonClicked() {
-                }
-
-                override fun onToolbarExpandButtonClicked() {
-                }
-
+                override fun onToolbarCollapseButtonClicked() {}
+                override fun onToolbarExpandButtonClicked() {}
+                override fun onToolbarHeadingButtonClicked() {}
+                override fun onToolbarHtmlButtonClicked() {}
+                override fun onToolbarListButtonClicked() {}
+                override fun onToolbarMediaButtonClicked(): Boolean = false
                 override fun onToolbarFormatButtonClicked(
                     format: ITextFormat,
                     isKeyboardShortcut: Boolean
                 ) {
                 }
-
-                override fun onToolbarHeadingButtonClicked() {
-                }
-
-                override fun onToolbarHtmlButtonClicked() {
-                }
-
-                override fun onToolbarListButtonClicked() {
-                }
-
-                override fun onToolbarMediaButtonClicked(): Boolean = false
-
             })
                 .setImageGetter(GlideImageLoader(this))
                 .setVideoThumbnailGetter(GlideVideoThumbnailLoader(this))
         }
-
-
-    }
-
-    private fun closeAndGoBack() {
-        findNavController().navigateUp()
     }
 }

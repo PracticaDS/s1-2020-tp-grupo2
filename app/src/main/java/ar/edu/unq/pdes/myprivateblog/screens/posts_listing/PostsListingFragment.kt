@@ -18,9 +18,7 @@ import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
 
-class PostsListingFragment : BaseFragment() {
-    override val layoutId = R.layout.fragment_posts_listing
-
+class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
     private val viewModel by viewModels<PostsListingViewModel> { viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
