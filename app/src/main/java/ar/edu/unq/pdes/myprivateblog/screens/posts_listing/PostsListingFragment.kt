@@ -29,6 +29,7 @@ class PostsListingFragment : BaseFragment() {
         getMainActivity().hideKeyboard()
 
         context?.apply { applyStatusBarStyle(this.getColor(R.color.palette_pastel_yellow_02)) }
+//      context?.apply { applyStatusBarStyle(ContextCompat.getColor(this, R.color.palette_pastel_yellow_02)) }     PARA API 21
 
         create_new_post.setOnClickListener {
             findNavController().navigate(PostsListingFragmentDirections.navActionCreatePost())
