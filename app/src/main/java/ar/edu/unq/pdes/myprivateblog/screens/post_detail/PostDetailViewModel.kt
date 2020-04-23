@@ -32,14 +32,13 @@ class PostDetailViewModel @Inject constructor(
     }
 
     fun deletePost() {
-        val aPost = post.value!!
-        post.value = aPost.delete()
+        val aPost = post.value?.copy(deleted = true) ?: return
         blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
         state.value = State.DELETED
     }
 
     fun cancelDeletePost() {
-        val aPost = post.value!!.restore()
+        val aPost = post.value?.copy(deleted = false) ?: return
         blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
     }
 }

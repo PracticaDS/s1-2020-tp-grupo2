@@ -22,7 +22,7 @@ class PostEditViewModel @Inject constructor(
     }
 
     val state = MutableLiveData(State.EDITING)
-    var post = MutableLiveData<BlogEntry?>()
+    val post = MutableLiveData<BlogEntry?>()
     val bodyText = MutableLiveData<String?>()
 
     fun fetchBlogEntry(id: EntityID) {
@@ -51,21 +51,11 @@ class PostEditViewModel @Inject constructor(
         }
     }
 
-    private fun updateField(updater: (BlogEntry) -> BlogEntry) {
-        post.postValue(updater(post.value!!))
-    }
-
     fun updateTitle(title: String) {
-        updateField {
-            it.title = title
-            it
-        }
+        post.value = post.value?.copy(title = title)
     }
 
     fun updateColor(color: Int) {
-        updateField {
-            it.cardColor = color
-            it
-        }
+        post.value = post.value?.copy(cardColor = color)
     }
 }
