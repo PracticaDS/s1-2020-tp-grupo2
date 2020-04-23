@@ -3,6 +3,5 @@
     <string name="hint_post_title">My Post Title</string>
     <string name="deleted_post">Se eliminó el post: %1$s</string>
     <string name="undo">Deshacer</string>
-    <string name="list_background">list_background</string>
     <string name="text_empty_list">Crea tu primer Post!</string>
 </resources>

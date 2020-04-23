@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/bottom_toolbar_bar_height"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/list_background"
+            android:contentDescription="@string/text_empty_list"
             android:src="@drawable/ic_empty_list" />
 
         <TextView
