@@ -10,12 +10,8 @@ import ar.edu.unq.pdes.myprivateblog.BaseFragment
 import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
+import ar.edu.unq.pdes.myprivateblog.utils.setAztecToolbarClickListener
 import kotlinx.android.synthetic.main.fragment_post_edit.*
-import org.wordpress.aztec.Aztec
-import org.wordpress.aztec.ITextFormat
-import org.wordpress.aztec.glideloader.GlideImageLoader
-import org.wordpress.aztec.glideloader.GlideVideoThumbnailLoader
-import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 
 class PostEditFragment : BaseFragment(R.layout.fragment_post_edit) {
     private val viewModel by viewModels<PostEditViewModel> { viewModelFactory }
@@ -35,7 +31,7 @@ class PostEditFragment : BaseFragment(R.layout.fragment_post_edit) {
                 PostEditViewModel.State.SUCCESS -> {
                     closeAndGoBack()
                 }
-                else -> { /* Do nothing, should not happen*/
+                else -> {
                 }
             }
         })
@@ -58,23 +54,7 @@ class PostEditFragment : BaseFragment(R.layout.fragment_post_edit) {
         btn_save.setOnClickListener { viewModel.updatePost() }
         btn_close.setOnClickListener { closeAndGoBack() }
 
-        context?.apply {
-            Aztec.with(body, source, formatting_toolbar, object : IAztecToolbarClickListener {
-                override fun onToolbarCollapseButtonClicked() {}
-                override fun onToolbarExpandButtonClicked() {}
-                override fun onToolbarHeadingButtonClicked() {}
-                override fun onToolbarHtmlButtonClicked() {}
-                override fun onToolbarListButtonClicked() {}
-                override fun onToolbarMediaButtonClicked(): Boolean = false
-                override fun onToolbarFormatButtonClicked(
-                    format: ITextFormat,
-                    isKeyboardShortcut: Boolean
-                ) {
-                }
-            })
-                .setImageGetter(GlideImageLoader(this))
-                .setVideoThumbnailGetter(GlideVideoThumbnailLoader(this))
-        }
+        context?.apply { setAztecToolbarClickListener(this, body, source, formatting_toolbar) }
     }
 
     private fun renderBlogEntry(post: BlogEntry) {
