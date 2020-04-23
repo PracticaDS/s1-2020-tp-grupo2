@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -34,7 +35,7 @@ class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
         }
 
         viewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
-            layout_empty.visibility = if (postList.isEmpty()) View.VISIBLE else View.INVISIBLE
+            layout_empty.isVisible = postList.isEmpty()
             posts_list_recyclerview.adapter = PostsListAdapter(postList) {
                 findNavController().navigate(PostsListingFragmentDirections.navActionOpenDetail(it))
             }
