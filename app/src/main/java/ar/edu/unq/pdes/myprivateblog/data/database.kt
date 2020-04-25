@@ -51,7 +51,10 @@ data class BlogEntry(
     @ColumnInfo(name = "cardColor")
     val cardColor: Int = Color.WHITE
 
-) : Serializable
+) : Serializable {
+    fun delete() = copy(deleted = true)
+    fun restore() = copy(deleted = false)
+}
 
 @Dao
 interface BlogEntriesDao {

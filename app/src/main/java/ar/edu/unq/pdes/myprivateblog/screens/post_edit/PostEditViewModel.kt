@@ -1,21 +1,13 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_edit
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
-import ar.edu.unq.pdes.myprivateblog.rx.RxSchedulers
-import io.reactivex.Flowable
-import java.io.File
-import java.io.OutputStreamWriter
+import ar.edu.unq.pdes.myprivateblog.services.PostService
 import javax.inject.Inject
 
-class PostEditViewModel @Inject constructor(
-    private val blogEntriesRepository: BlogEntriesRepository,
-    val context: Context
-) : ViewModel() {
+class PostEditViewModel @Inject constructor(private val postService: PostService) : ViewModel() {
 
     enum class State {
         EDITING, SUCCESS, ERROR
@@ -26,32 +18,15 @@ class PostEditViewModel @Inject constructor(
     val bodyText = MutableLiveData<String?>()
 
     fun fetchBlogEntry(id: EntityID) {
-        val disposable = blogEntriesRepository
-            .fetchById(id)
-            .map {
-                val body = File(context.filesDir, it.bodyPath!!).readText()
-                Pair(it, body)
-            }
-            .compose(RxSchedulers.flowableAsync())
-            .subscribe {
-                post.value = it.first
-                bodyText.value = it.second
-            }
+        val disposable = postService.getById(id).subscribe {
+            post.value = it.first
+            bodyText.value = it.second
+        }
     }
 
     fun updatePost() {
-        val disposable = Flowable.fromCallable {
-            val outputStreamWriter = OutputStreamWriter(
-                context.openFileOutput(post.value!!.bodyPath, Context.MODE_PRIVATE)
-            )
-            outputStreamWriter.use { it.write(bodyText.value!!) }
-            post.value!!
-        }
-            .flatMapCompletable { blogEntriesRepository.updateBlogEntry(it) }
-            .compose(RxSchedulers.completableAsync())
-            .subscribe {
-                state.value = State.SUCCESS
-            }
+        val disposable = postService.update(post.value!!, bodyText.value!!)
+            .subscribe { state.value = State.SUCCESS }
     }
 
     fun updateTitle(title: String) {
