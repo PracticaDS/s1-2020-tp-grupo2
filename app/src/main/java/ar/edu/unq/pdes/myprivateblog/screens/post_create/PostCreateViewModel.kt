@@ -33,15 +33,12 @@ class PostCreateViewModel @Inject constructor(
         // TODO: extract this to some BlogEntryService or BlogEntryActions or some other super meaningful name...
 
         val disposable = Flowable.fromCallable {
-
             val fileName = UUID.randomUUID().toString() + ".body"
             val outputStreamWriter =
                 OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE))
             outputStreamWriter.use { it.write(bodyText.value) }
             fileName
-
         }.flatMapSingle {
-
             blogEntriesRepository.createBlogEntry(
                 BlogEntry(
                     title = titleText.value.toString(),
@@ -49,12 +46,10 @@ class PostCreateViewModel @Inject constructor(
                     cardColor = cardColor.value!!
                 )
             )
-
         }.compose(RxSchedulers.flowableAsync()).subscribe {
             post = it.toInt()
             state.value = State.SUCCESS
         }
-
     }
 
 }

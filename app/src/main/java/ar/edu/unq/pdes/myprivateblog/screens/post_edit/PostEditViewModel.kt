@@ -28,27 +28,30 @@ class PostEditViewModel @Inject constructor(
     fun fetchBlogEntry(id: EntityID) {
         val disposable = blogEntriesRepository
             .fetchById(id)
+            .map {
+                val body = File(context.filesDir, it.bodyPath!!).readText()
+                Pair(it, body)
+            }
             .compose(RxSchedulers.flowableAsync())
             .subscribe {
-                post.value = it
-                bodyText.value = File(context.filesDir, it.bodyPath!!).readText()
+                post.value = it.first
+                bodyText.value = it.second
             }
     }
 
     fun updatePost() {
         val disposable = Flowable.fromCallable {
-            val outputStreamWriter =
-                OutputStreamWriter(
-                    context.openFileOutput(
-                        post.value!!.bodyPath,
-                        Context.MODE_PRIVATE
-                    )
-                )
+            val outputStreamWriter = OutputStreamWriter(
+                context.openFileOutput(post.value!!.bodyPath, Context.MODE_PRIVATE)
+            )
             outputStreamWriter.use { it.write(bodyText.value!!) }
-        }.compose(RxSchedulers.flowableAsync()).subscribe {
-            blogEntriesRepository.updateBlogEntry(post.value!!).blockingAwait()
-            state.value = State.SUCCESS
+            post.value!!
         }
+            .flatMapCompletable { blogEntriesRepository.updateBlogEntry(it) }
+            .compose(RxSchedulers.completableAsync())
+            .subscribe {
+                state.value = State.SUCCESS
+            }
     }
 
     fun updateTitle(title: String) {

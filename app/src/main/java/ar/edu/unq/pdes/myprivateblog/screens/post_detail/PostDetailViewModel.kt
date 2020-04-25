@@ -19,7 +19,6 @@ class PostDetailViewModel @Inject constructor(
     }
 
     val state = MutableLiveData(State.VIEW)
-
     var post = MutableLiveData<BlogEntry?>()
 
     fun fetchBlogEntry(id: EntityID) {
@@ -33,12 +32,19 @@ class PostDetailViewModel @Inject constructor(
 
     fun deletePost() {
         val aPost = post.value?.copy(deleted = true) ?: return
-        blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
-        state.value = State.DELETED
+        val disposable = blogEntriesRepository
+            .updateBlogEntry(aPost)
+            .compose(RxSchedulers.completableAsync())
+            .subscribe {
+                state.value = State.DELETED
+            }
     }
 
     fun cancelDeletePost() {
         val aPost = post.value?.copy(deleted = false) ?: return
-        blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
+        val disposable = blogEntriesRepository
+            .updateBlogEntry(aPost)
+            .compose(RxSchedulers.completableAsync())
+            .subscribe()
     }
 }
