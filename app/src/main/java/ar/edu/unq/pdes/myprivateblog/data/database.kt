@@ -27,9 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
 
 }
 
-@Entity(
-    tableName = "BlogEntries"
-)
+@Entity(tableName = "BlogEntries")
 data class BlogEntry(
 
     @PrimaryKey(autoGenerate = true)
@@ -53,12 +51,15 @@ data class BlogEntry(
     @ColumnInfo(name = "cardColor")
     val cardColor: Int = Color.WHITE
 
-) : Serializable
+) : Serializable {
+    fun delete() = copy(deleted = true)
+    fun restore() = copy(deleted = false)
+}
 
 @Dao
 interface BlogEntriesDao {
-    @Query("SELECT * FROM BlogEntries ORDER BY date DESC")
-    fun getAll(): Flowable<List<BlogEntry>>
+    @Query("SELECT * FROM BlogEntries WHERE is_deleted = :deleted ORDER BY date DESC")
+    fun getAll(deleted: Boolean = false): Flowable<List<BlogEntry>>
 
     @Query("SELECT * FROM BlogEntries WHERE uid = :entryId LIMIT 1")
     fun loadById(entryId: EntityID): Flowable<BlogEntry>
@@ -74,7 +75,6 @@ interface BlogEntriesDao {
 
     @Update
     fun update(entry: BlogEntry): Completable
-
 
     @Delete
     fun delete(entry: BlogEntry): Completable

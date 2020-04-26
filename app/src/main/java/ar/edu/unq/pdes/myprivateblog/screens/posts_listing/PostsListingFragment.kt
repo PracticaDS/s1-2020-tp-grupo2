@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -18,9 +19,7 @@ import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
 
-class PostsListingFragment : BaseFragment() {
-    override val layoutId = R.layout.fragment_posts_listing
-
+class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
     private val viewModel by viewModels<PostsListingViewModel> { viewModelFactory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,10 +35,11 @@ class PostsListingFragment : BaseFragment() {
         }
 
         viewModel.posts.observe(viewLifecycleOwner, Observer { postList ->
+            image_empty_background.isVisible = postList.isEmpty()
+            text_empty_list.isVisible = postList.isEmpty()
             posts_list_recyclerview.adapter = PostsListAdapter(postList) {
                 findNavController().navigate(PostsListingFragmentDirections.navActionOpenDetail(it))
             }
-
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
     }

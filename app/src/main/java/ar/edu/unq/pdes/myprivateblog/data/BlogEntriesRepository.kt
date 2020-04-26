@@ -16,8 +16,7 @@ class BlogEntriesRepository(val appDatabase: AppDatabase) {
         .insert(blogEntry)
         .subscribeOn(Schedulers.io())
 
-    fun updateBlogEntry(album: BlogEntry) =
-        appDatabase.blogEntriesDao()
-            .update(album)
-            .subscribeOn(Schedulers.io())
+    fun updateBlogEntry(blogEntry: BlogEntry) = appDatabase.blogEntriesDao()
+        .update(blogEntry)
+        .subscribeOn(Schedulers.io())
 }

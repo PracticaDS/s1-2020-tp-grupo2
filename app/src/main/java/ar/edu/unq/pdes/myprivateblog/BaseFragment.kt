@@ -7,17 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseFragment : DaggerFragment() {
-
-    abstract val layoutId: Int
+abstract class BaseFragment(private val layoutId: Int) : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(layoutId, container, false)
     }
 
@@ -28,26 +31,20 @@ abstract class BaseFragment : DaggerFragment() {
     protected fun applyStatusBarStyle(backgroundColor: Int, lumaThreshold: Float = 0.7f) {
         val window = getMainActivity().window
         val brightness = ColorUtils.luminance(backgroundColor)
-
         if (brightness > lumaThreshold) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } else {
             window.decorView.systemUiVisibility = 0 // clear all flags
         }
-
         window.statusBarColor = backgroundColor
     }
 
+    protected fun closeAndGoBack() = findNavController().navigateUp()
 }
 
 object ColorUtils {
-    fun findTextColorGivenBackgroundColor(color: Int, lumaThreshold: Float = 0.7f): Int {
-        return if (ColorUtils.luminance(color) > lumaThreshold) {
-            Color.DKGRAY
-        } else {
-            Color.WHITE
-        }
-    }
+    fun findTextColorGivenBackgroundColor(color: Int, lumaThreshold: Float = 0.7f) =
+        if (luminance(color) > lumaThreshold) Color.DKGRAY else Color.WHITE
 
     fun luminance(@ColorInt color: Int): Float = saturate(
         0.2126f * Color.red(color) / 255f + 0.7152f * Color.green(color) / 255f + 0.0722f * Color.blue(
