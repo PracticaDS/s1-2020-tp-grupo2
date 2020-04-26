@@ -1,45 +1,38 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_detail
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
-import ar.edu.unq.pdes.myprivateblog.rx.RxSchedulers
+import ar.edu.unq.pdes.myprivateblog.services.PostService
 import javax.inject.Inject
 
-class PostDetailViewModel @Inject constructor(
-    private val blogEntriesRepository: BlogEntriesRepository,
-    val context: Context
-) : ViewModel() {
+class PostDetailViewModel @Inject constructor(private val postService: PostService) : ViewModel() {
 
     enum class State {
         VIEW, DELETED
     }
 
     val state = MutableLiveData(State.VIEW)
-
     var post = MutableLiveData<BlogEntry?>()
+    val bodyText = MutableLiveData<String?>()
 
     fun fetchBlogEntry(id: EntityID) {
-        val disposable = blogEntriesRepository
-            .fetchById(id)
-            .compose(RxSchedulers.flowableAsync())
-            .subscribe {
-                post.value = it
-            }
+        val disposable = postService.getById(id).subscribe {
+            post.value = it.first
+            bodyText.value = it.second
+        }
     }
 
     fun deletePost() {
-        val aPost = post.value!!
-        post.value = aPost.delete()
-        blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
-        state.value = State.DELETED
+        val aPost = post.value ?: return
+        val disposable = postService.delete(aPost).subscribe {
+            state.value = State.DELETED
+        }
     }
 
     fun cancelDeletePost() {
-        val aPost = post.value!!.restore()
-        blogEntriesRepository.updateBlogEntry(aPost).blockingAwait()
+        val aPost = post.value ?: return
+        val disposable = postService.restore(aPost).subscribe()
     }
 }

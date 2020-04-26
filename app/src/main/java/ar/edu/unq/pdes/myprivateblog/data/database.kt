@@ -27,42 +27,33 @@ abstract class AppDatabase : RoomDatabase() {
 
 }
 
-@Entity(
-    tableName = "BlogEntries"
-)
+@Entity(tableName = "BlogEntries")
 data class BlogEntry(
 
     @PrimaryKey(autoGenerate = true)
     var uid: EntityID = 0,
 
     @ColumnInfo(name = "title")
-    var title: String = "",
+    val title: String = "",
 
     @ColumnInfo(name = "bodyPath")
-    var bodyPath: String? = null,
+    val bodyPath: String? = null,
 
     @ColumnInfo(name = "imagePath")
     val imagePath: String? = null,
 
     @ColumnInfo(name = "is_deleted")
-    var deleted: Boolean = false,
+    val deleted: Boolean = false,
 
     @ColumnInfo(name = "date")
     val date: OffsetDateTime? = null,
 
     @ColumnInfo(name = "cardColor")
-    var cardColor: Int = Color.WHITE
+    val cardColor: Int = Color.WHITE
 
 ) : Serializable {
-    fun delete(): BlogEntry {
-        deleted = true
-        return this
-    }
-
-    fun restore(): BlogEntry {
-        deleted = false
-        return this
-    }
+    fun delete() = copy(deleted = true)
+    fun restore() = copy(deleted = false)
 }
 
 @Dao
