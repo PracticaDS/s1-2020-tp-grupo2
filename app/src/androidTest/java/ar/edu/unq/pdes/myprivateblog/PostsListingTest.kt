@@ -1,18 +1,12 @@
 package ar.edu.unq.pdes.myprivateblog
 
 import android.graphics.Color
-import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.web.sugar.Web.onWebView
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,48 +18,6 @@ class PostsListingTest {
     @get:Rule
     var activityRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
-
-    private fun onTitle() = onView(withId(R.id.title))
-    private fun onBody() = onView(withId(R.id.body))
-
-    private fun clickPickerColor(pickedColor: Int) =
-        onView(withTintColor(pickedColor)).perform(click())
-
-    private fun clickIn(id: Int) = onView(withId(id)).perform(click())
-    private fun goToCreatePost() = clickIn(R.id.create_new_post)
-    private fun clickSaveBtn() = clickIn(R.id.btn_save)
-    private fun clickEditBtn() = clickIn(R.id.btn_edit)
-    private fun clickBackBtn() = clickIn(R.id.btn_back)
-    private fun clickDeleteBtn() = clickIn(R.id.btn_delete)
-
-    private fun onTitle_type(text: String) = onTitle().perform(typeText(text))
-    private fun onBody_type(text: String) = onBody().perform(typeText(text))
-
-    private fun clearAndTypeOn(view: ViewInteraction, text: String) =
-        view.perform(clearText()).perform(typeText(text))
-
-    private fun onBody_clearAndType(text: String) = clearAndTypeOn(onBody(), text)
-    private fun onTitle_clearAndType(text: String) = clearAndTypeOn(onTitle(), text)
-
-    private fun checkOnWebBody(bodyText: String) =
-        onWebView(withId(R.id.body))
-            .check(withWebViewTextMatcher("<head></head><body>$bodyText</body>"))
-
-    private fun checkOnPostList(matcher: Matcher<View?>) =
-        onView(withId(R.id.posts_list_recyclerview)).check(matches(matcher))
-
-    private fun checkPostList_notHasText(text: String) =
-        checkOnPostList(not(hasItem(hasDescendant(withText(text)))))
-
-    private fun checkPostList_hasText(text: String, position: Int? = null) {
-        if (position == null) {
-            checkOnPostList(hasItem(hasDescendant(withText(text))))
-        } else {
-            checkOnPostList(atPosition(position, hasDescendant(withText(text))))
-        }
-    }
-
-    private fun checkTitle_hasText(text: String) = onTitle().check(matches(withText(text)))
 
     @Test
     fun whenTappingOnNewPost_postCreationScreenShouldOpen() {
@@ -90,39 +42,99 @@ class PostsListingTest {
     }
 
     @Test
-    fun whenEditingPost_shouldModifyThePost() {
-        val postTitleToEdit = "postToEdit"
-        val postTitleEdited = "postEdited"
-        val bodyTextToEdit = "This is the body to edit"
-        val bodyTextEdited = "This is the body edited"
-
-        goToCreatePost()
-        onTitle_type(postTitleToEdit)
-        onBody_type(bodyTextToEdit)
-        clickSaveBtn()
-        clickEditBtn()
-        onTitle_clearAndType(postTitleEdited)
-        onBody_clearAndType(bodyTextEdited)
-        clickSaveBtn()
-
-        checkTitle_hasText(postTitleEdited)
-        checkOnWebBody(bodyTextEdited)
-
-        clickBackBtn()
-        checkPostList_hasText(postTitleEdited)
-    }
-
-    @Test
-    fun whenDeletingPost_shouldBeRemoved() {
-        val postTitle = "post"
-        val bodyText = "This is the body"
+    fun whenTappingOnNewPost_ShouldCreatePostAndShouldAddAnItemToTheList() {
+        val postTitle = "Nuevo post"
+        val bodyText = "Esta es una prueba"
 
         goToCreatePost()
         onTitle_type(postTitle)
         onBody_type(bodyText)
         clickSaveBtn()
-        clickDeleteBtn()
-
-        checkPostList_notHasText(postTitle)
+        clickBackBtn()
+        checkPostList_hasText(postTitle, 0)
+        checkAmountPosts(1)
     }
+
+    @Test
+    fun whenTappingOnNewPostAndClosingWithoutSaving_theNumberOfItemsOnTheListPostsShouldNotChange() {
+        val postTitle = "Mi nuevo post"
+        val bodyText = "Blah blah"
+
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickCloseBtn()
+        checkPostList_notHasText(postTitle)
+        checkAmountPosts(0)
+    }
+
+    @Test
+    fun whenTappingOnNewPost_ShouldCreatePostAndShouldAddAnItemToTheEndOfTheList() {
+        val amountPost = 0;
+        val postTitle1 = "Post 1"
+        val postTextBody1 = "This is the body of post 1"
+
+        val postTitle2 = "Post 2"
+        val postTextBody2 = "This is the body of post 2"
+
+        //create post 1
+        goToCreatePost()
+        onTitle_type(postTitle1)
+        onBody_type(postTextBody1)
+        clickSaveBtn()
+        clickBackBtn()
+
+        //create post 2
+        goToCreatePost()
+        onTitle_type(postTitle2)
+        onBody_type(postTextBody2)
+        clickSaveBtn()
+        clickBackBtn()
+
+        checkAmountPosts(2)
+        checkPostList_hasText(postTitle1, 0)
+        checkPostList_hasText(postTitle2, 1)
+    }
+
+    @Test
+    fun whenTheAppStarts_ShouldShowTheBottonToCreateNewPostAndAnImage() {
+        onView(withId(R.id.text_empty_list))
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.create_new_post))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun whenCreatingPost_shouldButtonsMustBeVisible() {
+
+        goToCreatePost()
+        onView(withId(R.id.btn_save)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_close)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.body)).check(matches(isDisplayed()));
+        onView(withId(R.id.color_picker)).check(matches(isDisplayed()));
+        onView(withId(R.id.formatting_toolbar)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    fun whenCreatingPost_shouldNavigateToPostDetailButtonsMustBeVisible() {
+        val postTitle = "post1"
+        val bodyText = "This is the body"
+        val pickedColor = Color.parseColor("#b39ddb")
+
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickPickerColor(pickedColor)
+        clickSaveBtn()
+
+        onView(withId(R.id.btn_back)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_edit)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_delete)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.body)).check(matches(isDisplayed()));
+
+    }
+
 }
