@@ -13,6 +13,8 @@ import ar.edu.unq.pdes.myprivateblog.BaseFragment
 import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
+import ar.edu.unq.pdes.myprivateblog.helper.logEventDeletePost
+import ar.edu.unq.pdes.myprivateblog.helper.logEventEditPost
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 
@@ -45,11 +47,13 @@ class PostDetailFragment : BaseFragment(R.layout.fragment_post_detail) {
         })
         btn_back.setOnClickListener { closeAndGoBack() }
         btn_edit.setOnClickListener {
+            logEventEditPost(getMainActivity())
             findNavController().navigate(PostDetailFragmentDirections.navActionEditPost(args.postId))
         }
         btn_delete.setOnClickListener {
             val title = viewModel.post.value?.title ?: ""
             viewModel.deletePost()
+            logEventDeletePost(getMainActivity())
             Snackbar.make(it, getString(R.string.deleted_post, title), Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo) { viewModel.cancelDeletePost() }
                 .show()
