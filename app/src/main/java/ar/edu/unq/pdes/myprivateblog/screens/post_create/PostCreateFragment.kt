@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
 import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
-import ar.edu.unq.pdes.myprivateblog.helper.logEventEditPost
+import ar.edu.unq.pdes.myprivateblog.helper.logEventSavePost
 import ar.edu.unq.pdes.myprivateblog.utils.setAztecToolbarClickListener
 import kotlinx.android.synthetic.main.fragment_post_edit.*
 
@@ -52,7 +52,7 @@ class PostCreateFragment : BaseFragment(R.layout.fragment_post_edit) {
             viewModel.bodyText.value = body.toFormattedHtml()
         }
         btn_save.setOnClickListener {
-            logEventEditPost(getMainActivity())
+            logEventSavePost(getMainActivity())
             viewModel.createPost() }
         btn_close.setOnClickListener { closeAndGoBack() }
         color_picker.onColorSelectionListener = {
