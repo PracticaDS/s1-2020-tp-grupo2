@@ -17,7 +17,6 @@ import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
-import ar.edu.unq.pdes.myprivateblog.helper.logEventCreateNewPost
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
 
 class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
@@ -32,7 +31,6 @@ class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
 //      context?.apply { applyStatusBarStyle(ContextCompat.getColor(this, R.color.palette_pastel_yellow_02)) }     PARA API 21
 
         create_new_post.setOnClickListener {
-            logEventCreateNewPost(getMainActivity())
             findNavController().navigate(PostsListingFragmentDirections.navActionCreatePost())
         }
 
