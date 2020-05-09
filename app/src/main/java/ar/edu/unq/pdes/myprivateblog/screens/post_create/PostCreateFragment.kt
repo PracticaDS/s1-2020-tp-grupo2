@@ -50,7 +50,8 @@ class PostCreateFragment : BaseFragment(R.layout.fragment_post_edit) {
         body.doOnTextChanged { text, start, count, after ->
             viewModel.bodyText.value = body.toFormattedHtml()
         }
-        btn_save.setOnClickListener { viewModel.createPost() }
+        btn_save.setOnClickListener {
+            viewModel.createPost() }
         btn_close.setOnClickListener { closeAndGoBack() }
         color_picker.onColorSelectionListener = {
             viewModel.cardColor.postValue(it)

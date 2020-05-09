@@ -1,12 +1,14 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_create
 
+import android.content.Context
 import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ar.edu.unq.pdes.myprivateblog.helper.logEventCreateNewPost
 import ar.edu.unq.pdes.myprivateblog.services.PostService
 import javax.inject.Inject
 
-class PostCreateViewModel @Inject constructor(private val postService: PostService) : ViewModel() {
+class PostCreateViewModel @Inject constructor(private val postService: PostService, val context: Context) : ViewModel() {
 
     enum class State {
         EDITING, SUCCESS, ERROR
@@ -28,5 +30,6 @@ class PostCreateViewModel @Inject constructor(private val postService: PostServi
             post = it.toInt()
             state.value = State.SUCCESS
         }
+        logEventCreateNewPost(context)
     }
 }
