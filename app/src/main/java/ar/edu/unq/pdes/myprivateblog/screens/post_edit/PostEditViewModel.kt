@@ -1,15 +1,14 @@
 package ar.edu.unq.pdes.myprivateblog.screens.post_edit
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
-import ar.edu.unq.pdes.myprivateblog.helper.logEventSavePost
+import ar.edu.unq.pdes.myprivateblog.logger.AnalyticsLogger
 import ar.edu.unq.pdes.myprivateblog.services.PostService
 import javax.inject.Inject
 
-class PostEditViewModel @Inject constructor(private val postService: PostService, val context: Context) : ViewModel() {
+class PostEditViewModel @Inject constructor(private val postService: PostService, val analytics: AnalyticsLogger) : ViewModel() {
 
     enum class State {
         EDITING, SUCCESS, ERROR
@@ -29,7 +28,7 @@ class PostEditViewModel @Inject constructor(private val postService: PostService
     fun updatePost() {
         val disposable = postService.update(post.value!!, bodyText.value!!)
             .subscribe { state.value = State.SUCCESS }
-        logEventSavePost(context)
+        analytics.logEventSavePost()
     }
 
     fun updateTitle(title: String) {
