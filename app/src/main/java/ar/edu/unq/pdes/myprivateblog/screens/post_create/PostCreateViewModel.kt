@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ar.edu.unq.pdes.myprivateblog.logger.AnalyticsLogger
+import ar.edu.unq.pdes.myprivateblog.logger.TypeEventAnalytics
 import ar.edu.unq.pdes.myprivateblog.services.PostService
 import javax.inject.Inject
 
@@ -29,6 +30,6 @@ class PostCreateViewModel @Inject constructor(private val postService: PostServi
             post = it.toInt()
             state.value = State.SUCCESS
         }
-        analytics.logEventCreateNewPost()
+        analytics.logEvent(TypeEventAnalytics.CREATE_NEW_POST)
     }
 }

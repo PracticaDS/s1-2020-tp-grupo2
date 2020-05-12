@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
 import ar.edu.unq.pdes.myprivateblog.logger.AnalyticsLogger
+import ar.edu.unq.pdes.myprivateblog.logger.TypeEventAnalytics
 import ar.edu.unq.pdes.myprivateblog.services.PostService
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class PostDetailViewModel @Inject constructor(private val postService: PostServi
             post.value = it.first
             bodyText.value = it.second
         }
-        analytics.logEventEditPost()
+        analytics.logEvent(TypeEventAnalytics.VIEW_POST)
     }
 
     fun deletePost() {
@@ -31,12 +32,12 @@ class PostDetailViewModel @Inject constructor(private val postService: PostServi
         val disposable = postService.delete(aPost).subscribe {
             state.value = State.DELETED
         }
-        analytics.logEventDeletePost()
+        analytics.logEvent(TypeEventAnalytics.DELETE_POST)
     }
 
     fun cancelDeletePost() {
         val aPost = post.value ?: return
         val disposable = postService.restore(aPost).subscribe()
-        analytics.logEventCancelDeletePost()
+        analytics.logEvent(TypeEventAnalytics.CANCEL_EDIT_POST)
     }
 }
