@@ -11,6 +11,6 @@ class AnalyticsLogger @Inject constructor(private val context: Context){
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, typeEvent.toString())
         val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
-        firebaseAnalytics.logEvent(typeEvent.toString(), bundle)
+        firebaseAnalytics.logEvent(typeEvent.eventName, bundle)
     }
 }
