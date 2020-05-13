@@ -7,6 +7,7 @@ import ar.edu.unq.pdes.myprivateblog.MainActivity
 import ar.edu.unq.pdes.myprivateblog.MainActivityViewModel
 import ar.edu.unq.pdes.myprivateblog.data.AppDatabase
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
+import ar.edu.unq.pdes.myprivateblog.logger.AnalyticsLogger
 import ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateFragment
 import ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.post_detail.PostDetailFragment
@@ -27,7 +28,8 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         ApplicationModule::class,
-        MainActivityModule::class
+        MainActivityModule::class,
+        LoggerModule::class
     ])
 interface ApplicationComponent : AndroidInjector<BaseApplication> {
 
@@ -134,4 +136,14 @@ abstract class PostCreateModule {
     @IntoMap
     @ViewModelKey(PostCreateViewModel::class)
     abstract fun bindViewModel(viewmodel: PostCreateViewModel): ViewModel
+}
+
+@Module
+open class LoggerModule {
+
+    @Singleton
+    @Provides
+    fun provideAnaliticsLogger(context: Context): AnalyticsLogger {
+        return AnalyticsLogger(context)
+    }
 }
