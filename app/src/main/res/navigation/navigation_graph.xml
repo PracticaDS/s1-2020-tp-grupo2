@@ -3,8 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/postsListingFragment">
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ar.edu.unq.pdes.myprivateblog.screens.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
 
+
+        <action
+            android:id="@+id/nav_action_post_listing"
+            app:destination="@id/postsListingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/postsListingFragment"
         android:name="ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment"
@@ -69,5 +83,7 @@
             app:popUpTo="@id/postCreateFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
+
 
 </navigation>

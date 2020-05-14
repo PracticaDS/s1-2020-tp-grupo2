@@ -4,4 +4,7 @@
     <string name="deleted_post">Se eliminó el post: %1$s</string>
     <string name="undo">Deshacer</string>
     <string name="text_empty_list">Crea tu primer Post!</string>
+    <string name="text_empty_login">Login!</string>
+    <string name="error_login">Error al autenticar</string>
+    <string name="success_login">Login Exitoso</string>
 </resources>
