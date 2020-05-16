@@ -6,8 +6,8 @@
 **My Private Blog** es una aplicación mobile pensada para que los usuarios puedan crear sus propios post.
 
 <p float="left">
-<img src="https://drive.google.com/open?id=1VTqzpRYi9rCSrx3Se9Q3lPzYpWhm9gKb" width="240" height="auto">
-<img src="https://drive.google.com/open?id=1h6NMbCpRe9V25IQsO_F99OqLrCt2SN5m" width="240" height="auto">
+<img src="https://github.com/PracticaDS/s1-2020-tp-grupo2/blob/update_readme/imagenes-app/list_post.png" width="240" height="auto">
+<img src="https://github.com/PracticaDS/s1-2020-tp-grupo2/blob/update_readme/imagenes-app/edit.png" width="240" height="auto">
 </p>
 
 ## Colaborar con el proyecto
