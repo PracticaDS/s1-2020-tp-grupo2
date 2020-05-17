@@ -2,10 +2,10 @@ package ar.edu.unq.pdes.myprivateblog.screens.posts_listing
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,6 +18,7 @@ import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
+
 
 class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
     private val viewModel by viewModels<PostsListingViewModel> { viewModelFactory }
@@ -42,7 +43,19 @@ class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
             }
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
+
+        val toolbar = view.findViewById(R.id.toolbar) as Toolbar?
+        toolbar?.title = "Mi Blog Privado"
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
     }
+
+/*
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater){
+        val menuInflater: MenuInflater = activity!!.getMenuInflater()
+        menuInflater.inflate(R.menu.menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+*/
 }
 
 class BlogEntryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
