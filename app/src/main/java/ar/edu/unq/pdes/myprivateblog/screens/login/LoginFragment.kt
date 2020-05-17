@@ -3,6 +3,7 @@ package ar.edu.unq.pdes.myprivateblog.screens.login
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
@@ -10,13 +11,12 @@ import ar.edu.unq.pdes.myprivateblog.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.*
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseFragment(R.layout.fragment_login) {
+    /* Request code used to invoke sign in user interactions. */
     private val GOOGLE_SING_IN = 100
     private val viewModel by viewModels<LoginViewModel> { viewModelFactory }
 
@@ -51,12 +51,14 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                             if (it.isSuccessful) {
                                 findNavController().navigate(LoginFragmentDirections.navActionPostListing())
                             } else {
-                                getView()?.let { it1 -> Snackbar.make(it1, getString(R.string.error_login), Snackbar.LENGTH_LONG) }
+                                Toast.makeText(getMainActivity(), getString(R.string.error_login),
+                                    Toast.LENGTH_LONG).show();
                             }
                         }
                 }
             }catch (e:ApiException){
-                getView()?.let { it1 -> Snackbar.make(it1, getString(R.string.error_login), Snackbar.LENGTH_LONG) }
+                Toast.makeText(getMainActivity(), getString(R.string.error_login),
+                    Toast.LENGTH_LONG).show();
             }
         }
     }
