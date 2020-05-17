@@ -7,4 +7,6 @@
     <string name="text_empty_login">Login!</string>
     <string name="error_login">Error al autenticar</string>
     <string name="success_login">Login Exitoso</string>
+    <string name="app_icon">Ícono app</string>
+    <string name="app_name_init">Mi Blog Privado</string>
 </resources>
