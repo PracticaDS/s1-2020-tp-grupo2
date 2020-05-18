@@ -1,55 +1,27 @@
 package ar.edu.unq.pdes.myprivateblog.data
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
 
+class BlogEntriesRemoteRepository(db: FirebaseFirestore) {
 
-enum class ForeverStartLifecycleOwner : LifecycleOwner {
-    INSTANCE;
+    private val postsCollection = db.collection("posts")
 
-    private val mLifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): Lifecycle {
-        return mLifecycleRegistry
+    fun upload(blog: BlogEntry, onSuccess: () -> Unit) {
+        postsCollection.document(blog.uid.toString()).set(blog)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { e ->
+                Timber.w(e, "Error uploading post")
+            }
     }
 
-    init {
-        mLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-    }
-}
-
-class BlogEntriesRemoteRepository(blogRepository: BlogEntriesRepository) {
-    init {
-        val database: DatabaseReference = Firebase.database.reference
-        val postsRemote = database.child("posts")
-
-        postsRemote.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-                Timber.d(error.toException(), "loadPost:onCancelled")
+    fun download(onSuccess: (List<BlogEntry>) -> Unit) {
+        postsCollection.get()
+            .addOnSuccessListener { result ->
+                onSuccess(result.map { it.toObject(BlogEntry::class.java) })
             }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.forEach {
-                    val post = it.getValue<BlogEntry>()
-                    blogRepository.updateBlogEntry(post!!)
-                }
+            .addOnFailureListener {
+                Timber.d(it, "Error download posts")
             }
-        })
-
-        val posts: LiveData<List<BlogEntry>> = blogRepository.getAllBlogEntries()
-        posts.observe(ForeverStartLifecycleOwner.INSTANCE, Observer { postList ->
-            database.updateChildren(mapOf("posts" to postList))
-        })
     }
 }

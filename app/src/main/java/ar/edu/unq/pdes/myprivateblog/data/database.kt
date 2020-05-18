@@ -49,11 +49,15 @@ data class BlogEntry(
     val date: OffsetDateTime? = null,
 
     @ColumnInfo(name = "cardColor")
-    val cardColor: Int = Color.WHITE
+    val cardColor: Int = Color.WHITE,
+
+    @ColumnInfo(name = "synchronized")
+    val inSync: Boolean = false
 
 ) : Serializable {
     fun delete() = copy(deleted = true)
     fun restore() = copy(deleted = false)
+    fun synced() = copy(inSync = true)
 }
 
 @Dao

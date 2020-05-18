@@ -1,7 +1,6 @@
 package ar.edu.unq.pdes.myprivateblog.services
 
 import android.content.Context
-import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRemoteRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
@@ -17,10 +16,6 @@ class PostService @Inject constructor(
     private val blogRepository: BlogEntriesRepository,
     val context: Context
 ) {
-
-    init {
-        BlogEntriesRemoteRepository(blogRepository)
-    }
 
     private fun updateBody(bodyPath: String, bodyText: String) {
         val outputStreamWriter =
