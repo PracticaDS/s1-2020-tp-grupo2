@@ -17,18 +17,6 @@
         app:titleTextColor="@color/white"
         app:title="Mi Blog Privado"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <!--
-    Para insertar los ítems del menú
-        <include layout="@menu/menu"/>
--->
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/image_empty_background"
         android:layout_width="match_parent"

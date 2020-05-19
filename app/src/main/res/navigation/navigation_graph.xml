@@ -9,8 +9,6 @@
         android:name="ar.edu.unq.pdes.myprivateblog.screens.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
-
-
         <action
             android:id="@+id/nav_action_post_listing"
             app:destination="@id/postsListingFragment"
@@ -34,6 +32,13 @@
         <action
             android:id="@+id/nav_action_create_post"
             app:destination="@id/postCreateFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/nav_action_login"
+            app:destination="@id/loginFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

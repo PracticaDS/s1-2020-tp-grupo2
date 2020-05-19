@@ -9,37 +9,32 @@ import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
 import ar.edu.unq.pdes.myprivateblog.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseFragment(R.layout.fragment_login) {
-    /* Request code used to invoke sign in user interactions. */
-    private val GOOGLE_SING_IN = 100
+
     private val viewModel by viewModels<LoginViewModel> { viewModelFactory }
+    lateinit var firebaseAuth: FirebaseAuth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        getMainActivity().hideKeyboard()
-
-        googleButton.setOnClickListener{
-
-            //configuration
-          val googleConf=  GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(
-              R.string.default_web_client_id)).requestEmail().build()
-
-            val googleClient = GoogleSignIn.getClient(this.getMainActivity(), googleConf)
-            googleClient.signOut()
-            startActivityForResult(googleClient.signInIntent,GOOGLE_SING_IN)
+        firebaseAuth = FirebaseAuth.getInstance()
+        if(firebaseAuth.currentUser != null){
+            goToPostListing()
         }
-
+        else {
+            viewModel.configureGoogleSignIn()
+            googleButton.setOnClickListener {
+                logingUser()
+            }
+        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==GOOGLE_SING_IN){
+        if(requestCode== viewModel.GOOGLE_SING_IN){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
@@ -49,17 +44,28 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                     FirebaseAuth.getInstance().signInWithCredential(credential)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
-                                findNavController().navigate(LoginFragmentDirections.navActionPostListing())
+                                goToPostListing()
                             } else {
-                                Toast.makeText(getMainActivity(), getString(R.string.error_login),
-                                    Toast.LENGTH_LONG).show();
+                                showMessage(getString(R.string.error_login))
                             }
                         }
                 }
             }catch (e:ApiException){
-                Toast.makeText(getMainActivity(), getString(R.string.error_login),
-                    Toast.LENGTH_LONG).show();
+                showMessage(getString(R.string.error_login))
             }
         }
     }
+    private fun showMessage(message: String){
+        Toast.makeText(getMainActivity(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun goToPostListing(){
+        findNavController().navigate(LoginFragmentDirections.navActionPostListing())
+    }
+
+    private fun logingUser() {
+        val signInIntent = viewModel.googleClient.signInIntent
+        startActivityForResult(signInIntent, viewModel.GOOGLE_SING_IN)
+    }
+
 }

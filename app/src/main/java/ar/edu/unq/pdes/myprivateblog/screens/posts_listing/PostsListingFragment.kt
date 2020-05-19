@@ -4,8 +4,6 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -18,14 +16,20 @@ import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
 
 
 class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
     private val viewModel by viewModels<PostsListingViewModel> { viewModelFactory }
+    lateinit var firebaseAuth: FirebaseAuth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firebaseAuth = FirebaseAuth.getInstance()
+        if(firebaseAuth.currentUser === null){
+            goToUserLogin()
+        }
 
         getMainActivity().hideKeyboard()
 
@@ -44,15 +48,27 @@ class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
             }
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
+        createMenOptions()
+    }
 
-        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+    private fun createMenOptions(){
+        val toolbar = getMainActivity().findViewById<Toolbar>(R.id.toolbar)
         toolbar.inflateMenu(R.menu.menu)
         toolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.menuLogout) {
-                Toast.makeText(requireActivity(), "Awesome!", Toast.LENGTH_SHORT).show()
+                signOutCurrentUser()
             }
             true
         }
+    }
+
+    private fun signOutCurrentUser(){
+        firebaseAuth.signOut()
+        findNavController().navigate(PostsListingFragmentDirections.navActionLogin())
+    }
+
+    private fun goToUserLogin(){
+        findNavController().navigate(PostsListingFragmentDirections.navActionLogin())
     }
 }
 
