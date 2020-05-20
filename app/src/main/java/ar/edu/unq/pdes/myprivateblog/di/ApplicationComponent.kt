@@ -8,6 +8,8 @@ import ar.edu.unq.pdes.myprivateblog.MainActivityViewModel
 import ar.edu.unq.pdes.myprivateblog.data.AppDatabase
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
 import ar.edu.unq.pdes.myprivateblog.logger.AnalyticsLogger
+import ar.edu.unq.pdes.myprivateblog.screens.login.LoginFragment
+import ar.edu.unq.pdes.myprivateblog.screens.login.LoginViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateFragment
 import ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.post_detail.PostDetailFragment
@@ -60,7 +62,8 @@ open class ApplicationModule {
         PostsListingModule::class,
         PostDetailModule::class,
         PostEditModule::class,
-        PostCreateModule::class
+        PostCreateModule::class,
+        LoginModule::class
     ]
 )
 abstract class MainActivityModule {
@@ -146,4 +149,17 @@ open class LoggerModule {
     fun provideAnaliticsLogger(context: Context): AnalyticsLogger {
         return AnalyticsLogger(context)
     }
+}
+@Module
+abstract class LoginModule {
+
+    @ContributesAndroidInjector(modules = [
+        ViewModelBuilder::class
+    ])
+    internal abstract fun loginFragment(): LoginFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    abstract fun bindViewModel(viewmodel: LoginViewModel): ViewModel
 }
