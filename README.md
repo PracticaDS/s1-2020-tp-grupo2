@@ -18,9 +18,8 @@ Más información [aquí](https://github.com/PracticaDS/s1-2020-tp-grupo2/blob/d
 </a>
 
 ## Desarrolladores
-- Ariel Alvarez
-- Augusto Conti
-- Ingrid Calderón
-- Luciano Amoruso
-- Maximiliano Díaz
-- Rosalí Zaracho
+- [Augusto Conti](https://github.com/AugustoConti)
+- [Ingrid Calderón](https://github.com/ingridc)
+- [Luciano Amoruso](https://github.com/lucianoamoruso)
+- [Maximiliano Díaz](https://github.com/DiazMaxiM)
+- [Rosalí Zaracho](https://github.com/rozaracho)
