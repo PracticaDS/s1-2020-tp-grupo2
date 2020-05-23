@@ -66,7 +66,7 @@ open class ApplicationModule {
         appDatabase: AppDatabase,
         remoteRepository: BlogEntriesRemoteRepository
     ): BlogEntriesRepository {
-        return BlogEntriesRepository(appDatabase, remoteRepository)
+        return BlogEntriesRepository(appDatabase.blogEntriesDao(), remoteRepository)
     }
 }
 

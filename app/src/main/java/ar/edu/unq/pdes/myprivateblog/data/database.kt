@@ -55,20 +55,21 @@ data class BlogEntry(
     val inSync: Boolean = false
 
 ) : Serializable {
-    fun delete() = copy(deleted = true)
-    fun restore() = copy(deleted = false)
-    fun synced() = copy(inSync = true)
+    fun asDeleted() = copy(deleted = true)
+    fun asRestored() = copy(deleted = false)
+    fun asSynced() = copy(inSync = true)
+    fun asNotSynced() = copy(inSync = false)
 }
 
 @Dao
 interface BlogEntriesDao {
-    @Query("SELECT * FROM BlogEntries WHERE is_deleted = :deleted ORDER BY date DESC")
-    fun getAll(deleted: Boolean = false): Flowable<List<BlogEntry>>
+    @Query("SELECT * FROM BlogEntries ORDER BY date DESC")
+    fun getAll(): Flowable<List<BlogEntry>>
 
     @Query("SELECT * FROM BlogEntries WHERE uid = :entryId LIMIT 1")
     fun loadById(entryId: EntityID): Flowable<BlogEntry>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(entries: List<BlogEntry>): Completable
 
     @Insert

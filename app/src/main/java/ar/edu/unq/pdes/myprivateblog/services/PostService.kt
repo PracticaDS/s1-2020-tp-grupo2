@@ -54,11 +54,11 @@ class PostService @Inject constructor(
         }.compose(RxSchedulers.flowableAsync())
 
     fun delete(post: BlogEntry): Completable = blogRepository
-        .updateBlogEntry(post.delete())
+        .updateBlogEntry(post.asDeleted())
         .compose(RxSchedulers.completableAsync())
 
     fun restore(post: BlogEntry): Completable = blogRepository
-        .updateBlogEntry(post.restore())
+        .updateBlogEntry(post.asRestored())
         .compose(RxSchedulers.completableAsync())
 
     fun getAllBlogEntries() = blogRepository.getAllBlogEntries()
