@@ -19,6 +19,8 @@ import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditFragment
 import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingViewModel
+import ar.edu.unq.pdes.myprivateblog.services.AuthService
+import ar.edu.unq.pdes.myprivateblog.services.FirebaseAuthService
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.*
@@ -34,7 +36,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         ApplicationModule::class,
         MainActivityModule::class,
-        LoggerModule::class
+        LoggerModule::class,
+        AuthModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<BaseApplication> {
@@ -44,6 +47,11 @@ interface ApplicationComponent : AndroidInjector<BaseApplication> {
         fun create(@BindsInstance applicationContext: Context): ApplicationComponent
     }
 }
+
+//@Singleton
+//@Component(modules = [FakeAuthModule::class])
+//interface TestComponent : ApplicationComponent {
+//}
 
 @Module
 open class ApplicationModule {
@@ -81,11 +89,7 @@ open class ApplicationModule {
 )
 abstract class MainActivityModule {
 
-    @ContributesAndroidInjector(
-        modules = [
-            ViewModelBuilder::class
-        ]
-    )
+    @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
     internal abstract fun mainActivity(): MainActivity
 
     @Binds
@@ -97,11 +101,7 @@ abstract class MainActivityModule {
 @Module
 abstract class PostsListingModule {
 
-    @ContributesAndroidInjector(
-        modules = [
-            ViewModelBuilder::class
-        ]
-    )
+    @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
     internal abstract fun postsListingFragment(): PostsListingFragment
 
     @Binds
@@ -113,11 +113,7 @@ abstract class PostsListingModule {
 @Module
 abstract class PostDetailModule {
 
-    @ContributesAndroidInjector(
-        modules = [
-            ViewModelBuilder::class
-        ]
-    )
+    @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
     internal abstract fun postDetailFragment(): PostDetailFragment
 
     @Binds
@@ -129,11 +125,7 @@ abstract class PostDetailModule {
 @Module
 abstract class PostEditModule {
 
-    @ContributesAndroidInjector(
-        modules = [
-            ViewModelBuilder::class
-        ]
-    )
+    @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
     internal abstract fun postEditFragment(): PostEditFragment
 
     @Binds
@@ -145,11 +137,7 @@ abstract class PostEditModule {
 @Module
 abstract class PostCreateModule {
 
-    @ContributesAndroidInjector(
-        modules = [
-            ViewModelBuilder::class
-        ]
-    )
+    @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
     internal abstract fun postCreateFragment(): PostCreateFragment
 
     @Binds
@@ -167,12 +155,31 @@ open class LoggerModule {
         return AnalyticsLogger(context)
     }
 }
+
+@Module
+open class AuthModule {
+
+    @Singleton
+    @Provides
+    fun provideAuthService(context: Context): AuthService {
+        return FirebaseAuthService(context)
+    }
+}
+
+//@Module
+//open class FakeAuthModule {
+//
+//    @Singleton
+//    @Provides
+//    fun provideAuthService(context: Context): AuthService {
+//        return FakeAuthService()
+//    }
+//}
+
 @Module
 abstract class LoginModule {
 
-    @ContributesAndroidInjector(modules = [
-        ViewModelBuilder::class
-    ])
+    @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
     internal abstract fun loginFragment(): LoginFragment
 
     @Binds

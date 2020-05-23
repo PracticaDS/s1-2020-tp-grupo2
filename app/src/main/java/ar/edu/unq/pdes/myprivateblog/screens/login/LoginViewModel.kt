@@ -1,25 +1,32 @@
 package ar.edu.unq.pdes.myprivateblog.screens.login
 
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
-import ar.edu.unq.pdes.myprivateblog.R
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import ar.edu.unq.pdes.myprivateblog.services.AuthService
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor( val context: Context) : ViewModel() {
-
+class LoginViewModel @Inject constructor(
+    val context: Context,
+    private val authService: AuthService
+) : ViewModel() {
     val GOOGLE_SING_IN = 100
-    lateinit var googleConf: GoogleSignInOptions
-    lateinit var googleClient: GoogleSignInClient
 
-    fun configureGoogleSignIn() {
-       googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString( R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleClient = GoogleSignIn.getClient(context, googleConf)
-        googleClient.signOut()
+    fun isLoggedIn() = authService.isLoggedIn()
+    fun signOut() {
+        authService.signOut()
     }
+
+    fun signInIntent() = authService.signInIntent()
+
+    fun login(
+        requestCode: Int,
+        data: Intent?,
+        onSuccess: () -> Unit,
+        onError: (Exception?) -> Unit
+    ) {
+        if (requestCode != GOOGLE_SING_IN) return
+        authService.login(data, onSuccess, onError)
+    }
+
 }
