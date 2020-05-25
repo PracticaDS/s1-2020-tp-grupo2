@@ -19,13 +19,6 @@ class PostsListingTest {
     var activityRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
 
-//    @Before
-//    fun setUp() {
-//        val testingComponent: ApplicationComponent = DaggerApplicationComponent.builder()
-//            .authModule(FakeAuthModule())
-//            .build()
-//    }
-
     @Test
     fun whenTappingOnNewPost_postCreationScreenShouldOpen() {
         goToCreatePost()

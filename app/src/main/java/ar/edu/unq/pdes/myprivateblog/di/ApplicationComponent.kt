@@ -20,6 +20,7 @@ import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingViewModel
 import ar.edu.unq.pdes.myprivateblog.services.AuthService
+import ar.edu.unq.pdes.myprivateblog.services.FakeAuthService
 import ar.edu.unq.pdes.myprivateblog.services.FirebaseAuthService
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -48,11 +49,6 @@ interface ApplicationComponent : AndroidInjector<BaseApplication> {
     }
 }
 
-//@Singleton
-//@Component(modules = [FakeAuthModule::class])
-//interface TestComponent : ApplicationComponent {
-//}
-
 @Module
 open class ApplicationModule {
 
@@ -77,6 +73,7 @@ open class ApplicationModule {
         return BlogEntriesRepository(appDatabase.blogEntriesDao(), remoteRepository)
     }
 }
+
 
 @Module(
     includes = [
@@ -161,20 +158,10 @@ open class AuthModule {
 
     @Singleton
     @Provides
-    fun provideAuthService(context: Context): AuthService {
+    open fun provideAuthService(context: Context): AuthService {
         return FirebaseAuthService(context)
     }
 }
-
-//@Module
-//open class FakeAuthModule {
-//
-//    @Singleton
-//    @Provides
-//    fun provideAuthService(context: Context): AuthService {
-//        return FakeAuthService()
-//    }
-//}
 
 @Module
 abstract class LoginModule {
