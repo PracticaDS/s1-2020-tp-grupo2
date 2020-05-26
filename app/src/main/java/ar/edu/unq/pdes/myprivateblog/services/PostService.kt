@@ -29,7 +29,10 @@ class PostService @Inject constructor(
         return fileName
     }
 
-    private fun readBody(bodyPath: String) = File(context.filesDir, bodyPath).readText()
+    private fun readBody(bodyPath: String): String {
+        val file = File(context.filesDir, bodyPath)
+        return if (file.exists()) file.readText() else ""
+    }
 
     fun getById(id: EntityID): Flowable<Pair<BlogEntry, String>> = blogRepository
         .fetchById(id)
