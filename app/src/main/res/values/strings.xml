@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyPrivateBlog</string>
+    <string name="app_name">Mi Blog Privado</string>
     <string name="hint_post_title">My Post Title</string>
     <string name="deleted_post">Se eliminó el post: %1$s</string>
     <string name="undo">Deshacer</string>
@@ -7,6 +7,5 @@
     <string name="text_empty_login">Login!</string>
     <string name="error_login">Error al autenticar</string>
     <string name="success_login">Login Exitoso</string>
-    <string name="app_icon">Ícono app</string>
-    <string name="app_name_init">Mi Blog Privado</string>
+    <string name="app_icon">Icono app</string>
 </resources>
