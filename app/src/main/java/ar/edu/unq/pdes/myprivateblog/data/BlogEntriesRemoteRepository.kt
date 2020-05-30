@@ -1,15 +1,18 @@
 package ar.edu.unq.pdes.myprivateblog.data
 
-import com.google.firebase.auth.FirebaseAuth
+import ar.edu.unq.pdes.myprivateblog.services.AuthService
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
 import java.lang.Exception
 
-class BlogEntriesRemoteRepository(private val db: FirebaseFirestore) {
+class BlogEntriesRemoteRepository(
+    private val db: FirebaseFirestore,
+    private val authService: AuthService
+) {
 
     private fun withPostsCollection(withCollection: (CollectionReference) -> Unit) {
-        val user = FirebaseAuth.getInstance().currentUser ?: return
+        val user = authService.currentUser() ?: return
         val postsCollection = db.collection("users")
             .document(user.uid).collection("posts")
         withCollection(postsCollection)

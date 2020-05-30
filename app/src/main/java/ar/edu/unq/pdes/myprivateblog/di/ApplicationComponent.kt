@@ -20,7 +20,6 @@ import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingViewModel
 import ar.edu.unq.pdes.myprivateblog.services.AuthService
-import ar.edu.unq.pdes.myprivateblog.services.FakeAuthService
 import ar.edu.unq.pdes.myprivateblog.services.FirebaseAuthService
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -60,8 +59,8 @@ open class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideBlogEntriesRemoteRepository(): BlogEntriesRemoteRepository {
-        return BlogEntriesRemoteRepository(Firebase.firestore)
+    fun provideBlogEntriesRemoteRepository(authService: AuthService): BlogEntriesRemoteRepository {
+        return BlogEntriesRemoteRepository(Firebase.firestore, authService)
     }
 
     @Singleton
