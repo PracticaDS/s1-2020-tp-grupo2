@@ -29,7 +29,10 @@ class PostService @Inject constructor(
         return fileName
     }
 
-    private fun readBody(bodyPath: String) = File(context.filesDir, bodyPath).readText()
+    private fun readBody(bodyPath: String): String {
+        val file = File(context.filesDir, bodyPath)
+        return if (file.exists()) file.readText() else ""
+    }
 
     fun getById(id: EntityID): Flowable<Pair<BlogEntry, String>> = blogRepository
         .fetchById(id)
@@ -54,11 +57,11 @@ class PostService @Inject constructor(
         }.compose(RxSchedulers.flowableAsync())
 
     fun delete(post: BlogEntry): Completable = blogRepository
-        .updateBlogEntry(post.delete())
+        .updateBlogEntry(post.asDeleted())
         .compose(RxSchedulers.completableAsync())
 
     fun restore(post: BlogEntry): Completable = blogRepository
-        .updateBlogEntry(post.restore())
+        .updateBlogEntry(post.asRestored())
         .compose(RxSchedulers.completableAsync())
 
     fun getAllBlogEntries() = blogRepository.getAllBlogEntries()

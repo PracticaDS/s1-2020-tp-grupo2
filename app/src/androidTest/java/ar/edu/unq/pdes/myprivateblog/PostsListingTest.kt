@@ -137,4 +137,39 @@ class PostsListingTest {
 
     }
 
+    @Test
+    fun whenEditingPost_shouldModifyThePost() {
+        val postTitleToEdit = "postToEdit"
+        val postTitleEdited = "postEdited"
+        val bodyTextToEdit = "This is the body to edit"
+        val bodyTextEdited = "This is the body edited"
+
+        goToCreatePost()
+        onTitle_type(postTitleToEdit)
+        onBody_type(bodyTextToEdit)
+        clickSaveBtn()
+        clickEditBtn()
+        onTitle_clearAndType(postTitleEdited)
+        onBody_clearAndType(bodyTextEdited)
+        clickSaveBtn()
+
+        checkTitle_hasText(postTitleEdited)
+        checkOnWebBody(bodyTextEdited)
+
+        clickBackBtn()
+        checkPostList_hasText(postTitleEdited)
+    }
+
+    @Test
+    fun whenDeletingPost_shouldBeRemoved() {
+        val postTitle = "post"
+        val bodyText = "This is the body"
+        goToCreatePost()
+        onTitle_type(postTitle)
+        onBody_type(bodyText)
+        clickSaveBtn()
+        clickDeleteBtn()
+        checkPostList_notHasText(postTitle)
+    }
+
 }

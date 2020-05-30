@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.plugins.RxJavaPlugins
 import timber.log.Timber
@@ -23,6 +24,7 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         RxJavaPlugins.setErrorHandler { Timber.e(it) }
+        AndroidThreeTen.init(this);
 
         setContentView(R.layout.activity_main)
     }

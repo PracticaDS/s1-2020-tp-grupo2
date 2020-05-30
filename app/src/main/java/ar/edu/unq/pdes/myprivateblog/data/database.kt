@@ -3,6 +3,8 @@ package ar.edu.unq.pdes.myprivateblog.data
 import android.content.Context
 import android.graphics.Color
 import androidx.room.*
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -10,21 +12,25 @@ import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import java.io.Serializable
 
+
 typealias EntityID = Int
 
-@Database(entities = [BlogEntry::class], version = 1)
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE BlogEntries ADD COLUMN synchronized INTEGER NOT NULL DEFAULT 0")
+    }
+}
+
+@Database(entities = [BlogEntry::class], version = 2)
 @TypeConverters(ThreeTenTimeTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun blogEntriesDao(): BlogEntriesDao
 
     companion object {
         fun generateDatabase(context: Context) = Room.databaseBuilder(
-            context,
-            AppDatabase::class.java, "myprivateblog.db"
-        ).build()
+            context, AppDatabase::class.java, "myprivateblog.db"
+        ).addMigrations(MIGRATION_1_2).build()
     }
-
 }
 
 @Entity(tableName = "BlogEntries")
@@ -49,22 +55,27 @@ data class BlogEntry(
     val date: OffsetDateTime? = null,
 
     @ColumnInfo(name = "cardColor")
-    val cardColor: Int = Color.WHITE
+    val cardColor: Int = Color.WHITE,
+
+    @ColumnInfo(name = "synchronized")
+    val inSync: Boolean = false
 
 ) : Serializable {
-    fun delete() = copy(deleted = true)
-    fun restore() = copy(deleted = false)
+    fun asDeleted() = copy(deleted = true)
+    fun asRestored() = copy(deleted = false)
+    fun asSynced() = copy(inSync = true)
+    fun asNotSynced() = copy(inSync = false)
 }
 
 @Dao
 interface BlogEntriesDao {
-    @Query("SELECT * FROM BlogEntries WHERE is_deleted = :deleted ORDER BY date DESC")
-    fun getAll(deleted: Boolean = false): Flowable<List<BlogEntry>>
+    @Query("SELECT * FROM BlogEntries ORDER BY date DESC")
+    fun getAll(): Flowable<List<BlogEntry>>
 
     @Query("SELECT * FROM BlogEntries WHERE uid = :entryId LIMIT 1")
     fun loadById(entryId: EntityID): Flowable<BlogEntry>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(entries: List<BlogEntry>): Completable
 
     @Insert

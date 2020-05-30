@@ -2,7 +2,9 @@ package ar.edu.unq.pdes.myprivateblog.screens.posts_listing
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
@@ -16,18 +18,16 @@ import ar.edu.unq.pdes.myprivateblog.ColorUtils
 import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
 
 
 class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
     private val viewModel by viewModels<PostsListingViewModel> { viewModelFactory }
-    lateinit var firebaseAuth: FirebaseAuth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        firebaseAuth = FirebaseAuth.getInstance()
-        if(firebaseAuth.currentUser === null){
+
+        if(!viewModel.isLoggedIn()){
             goToUserLogin()
         }
 
@@ -63,7 +63,7 @@ class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
     }
 
     private fun signOutCurrentUser(){
-        firebaseAuth.signOut()
+        viewModel.logout()
         findNavController().navigate(PostsListingFragmentDirections.navActionLogin())
     }
 

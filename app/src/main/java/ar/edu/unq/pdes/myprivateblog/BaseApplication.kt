@@ -8,7 +8,7 @@ import dagger.android.HasAndroidInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class BaseApplication : Application(), HasAndroidInjector {
+open class BaseApplication : Application(), HasAndroidInjector {
 
     @Inject
     @JvmField

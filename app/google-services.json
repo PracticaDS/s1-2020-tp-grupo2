@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "20649550847-tbjh892ragtsgm4s5jd79atppj39r9ie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.demo.debug",
+            "certificate_hash": "f3bc20df9dfea007c6f37bb27d7382f9591393c0"
+          }
+        },
+        {
+          "client_id": "20649550847-k6il18tvp8h9ehe1osvu09udhdo4kmdu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.demo.debug",
+            "certificate_hash": "dcdaf5c5f16c3c46d7010767fb834436c20e8022"
+          }
+        },
+        {
+          "client_id": "20649550847-clnepnelkq801ru7rjc4uhh05gq8lnmf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.demo.debug",
+            "certificate_hash": "be6ac764f1888ecf178223a9e9acdf3a9e4cd8f1"
+          }
+        },
+        {
           "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -73,6 +97,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "20649550847-o5p4mbnpuctgk3j3o2muf05hkm8uakcj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.debug",
+            "certificate_hash": "f3bc20df9dfea007c6f37bb27d7382f9591393c0"
+          }
+        },
+        {
           "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -98,64 +130,6 @@
         "mobilesdk_app_id": "1:20649550847:android:79706cf554a024601b7dca",
         "android_client_info": {
           "package_name": "ar.edu.unq.pdes.myprivateblog.full.release"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDoRTVjqOCO_YGwoVbbQGYujStwopkjcRo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:20649550847:android:52cdc4adc5c335ac1b7dca",
-        "android_client_info": {
-          "package_name": "ar.edu.unq.pdes.myprivateblog.demo"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDoRTVjqOCO_YGwoVbbQGYujStwopkjcRo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:20649550847:android:e9fdedf9f1a567411b7dca",
-        "android_client_info": {
-          "package_name": "ar.edu.unq.pdes.myprivateblog.full"
         }
       },
       "oauth_client": [
