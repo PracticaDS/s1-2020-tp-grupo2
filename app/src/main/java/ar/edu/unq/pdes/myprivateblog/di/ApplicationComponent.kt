@@ -8,7 +8,6 @@ import ar.edu.unq.pdes.myprivateblog.MainActivityViewModel
 import ar.edu.unq.pdes.myprivateblog.data.AppDatabase
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRemoteRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
-import ar.edu.unq.pdes.myprivateblog.logger.AnalyticsLogger
 import ar.edu.unq.pdes.myprivateblog.screens.login.LoginFragment
 import ar.edu.unq.pdes.myprivateblog.screens.login.LoginViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateFragment
@@ -19,7 +18,9 @@ import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditFragment
 import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingViewModel
+import ar.edu.unq.pdes.myprivateblog.services.AnalyticsService
 import ar.edu.unq.pdes.myprivateblog.services.AuthService
+import ar.edu.unq.pdes.myprivateblog.services.FirebaseAnalytics
 import ar.edu.unq.pdes.myprivateblog.services.FirebaseAuthService
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -147,8 +148,8 @@ open class LoggerModule {
 
     @Singleton
     @Provides
-    fun provideAnaliticsLogger(context: Context): AnalyticsLogger {
-        return AnalyticsLogger(context)
+    fun provideAnaliticsLogger(context: Context): AnalyticsService {
+        return FirebaseAnalytics(context)
     }
 }
 

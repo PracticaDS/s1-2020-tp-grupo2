@@ -4,12 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
-import ar.edu.unq.pdes.myprivateblog.logger.AnalyticsLogger
-import ar.edu.unq.pdes.myprivateblog.logger.TypeEventAnalytics
+import ar.edu.unq.pdes.myprivateblog.services.AnalyticsService
 import ar.edu.unq.pdes.myprivateblog.services.PostService
+import ar.edu.unq.pdes.myprivateblog.services.TypeEventAnalytics
 import javax.inject.Inject
 
-class PostDetailViewModel @Inject constructor(private val postService: PostService, val analytics: AnalyticsLogger) : ViewModel() {
+class PostDetailViewModel @Inject constructor(private val postService: PostService, val analytics: AnalyticsService) : ViewModel() {
 
     enum class State {
         VIEW, DELETED
