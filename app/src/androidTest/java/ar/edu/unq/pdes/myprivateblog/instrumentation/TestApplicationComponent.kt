@@ -3,7 +3,9 @@ package ar.edu.unq.pdes.myprivateblog.instrumentation
 import android.content.Context
 import ar.edu.unq.pdes.myprivateblog.BaseApplication
 import ar.edu.unq.pdes.myprivateblog.di.*
+import ar.edu.unq.pdes.myprivateblog.services.AnalyticsService
 import ar.edu.unq.pdes.myprivateblog.services.AuthService
+import ar.edu.unq.pdes.myprivateblog.services.FakeAnalyticsService
 import ar.edu.unq.pdes.myprivateblog.services.FakeAuthService
 import dagger.BindsInstance
 import dagger.Component
@@ -19,7 +21,7 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         ApplicationModule::class,
         MainActivityModule::class,
-        LoggerModule::class,
+        FakeAnalyticsModule::class,
         FakeAuthModule::class
     ]
 )
@@ -38,5 +40,15 @@ open class FakeAuthModule {
     @Provides
     open fun provideAuthService(): AuthService {
         return FakeAuthService()
+    }
+}
+
+@Module
+open class FakeAnalyticsModule {
+
+    @Singleton
+    @Provides
+    open fun provideAnalyticsService(): AnalyticsService {
+        return FakeAnalyticsService()
     }
 }
