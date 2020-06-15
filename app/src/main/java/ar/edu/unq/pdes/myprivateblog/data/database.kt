@@ -20,8 +20,16 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
         database.execSQL("ALTER TABLE BlogEntries ADD COLUMN synchronized INTEGER NOT NULL DEFAULT 0")
     }
 }
+val MIGRATION_2_3: Migration = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("""
+            ALTER TABLE BlogEntries
+            ADD COLUMN salt BLOB
+        """)
+    }
+}
 
-@Database(entities = [BlogEntry::class], version = 2)
+@Database(entities = [BlogEntry::class], version = 3)
 @TypeConverters(ThreeTenTimeTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun blogEntriesDao(): BlogEntriesDao
@@ -29,7 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         fun generateDatabase(context: Context) = Room.databaseBuilder(
             context, AppDatabase::class.java, "myprivateblog.db"
-        ).addMigrations(MIGRATION_1_2).build()
+        ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
     }
 }
 
@@ -58,7 +66,10 @@ data class BlogEntry(
     val cardColor: Int = Color.WHITE,
 
     @ColumnInfo(name = "synchronized")
-    val inSync: Boolean = false
+    val inSync: Boolean = false,
+
+    @ColumnInfo(name = "salt", typeAffinity = ColumnInfo.BLOB)
+    var salt: ByteArray? = null
 
 ) : Serializable {
     fun asDeleted() = copy(deleted = true)
