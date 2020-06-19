@@ -14,8 +14,8 @@ android {
         applicationId "ar.edu.unq.pdes.myprivateblog"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.3"
+        versionCode 8
+        versionName "1.7"
 
         testInstrumentationRunner "ar.edu.unq.pdes.myprivateblog.instrumentation.TestApplicationRunner"
 

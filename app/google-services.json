@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "20649550847-2oq27jih0enjmmlk083kb8v3p19tenom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.demo.debug",
+            "certificate_hash": "92bb64398486f13abe2e93b6797e48981d55c2f6"
+          }
+        },
+        {
+          "client_id": "20649550847-trifv1c3edkole8fd942k1t1jjli1pnp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.demo.debug",
+            "certificate_hash": "897cc8cc4ffbad99896639705e56d67fad7ed71d"
+          }
+        },
+        {
           "client_id": "20649550847-tbjh892ragtsgm4s5jd79atppj39r9ie.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -68,6 +84,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "20649550847-imusj3unhgghu8take4nid7ncuumpm7t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.demo.release",
+            "certificate_hash": "3755965ed961e3fff9469d498454fb1830f88449"
+          }
+        },
+        {
           "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -96,6 +120,38 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "20649550847-6j3tbb3t15g4opi17mlv8j0fapaapi6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.debug",
+            "certificate_hash": "92bb64398486f13abe2e93b6797e48981d55c2f6"
+          }
+        },
+        {
+          "client_id": "20649550847-52h7potrj5r4irghsdg3sk4ji8pfa9um.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.debug",
+            "certificate_hash": "3755965ed961e3fff9469d498454fb1830f88449"
+          }
+        },
+        {
+          "client_id": "20649550847-prqn3orphu32sqnlbtid61gpdgqt8a74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.debug",
+            "certificate_hash": "dcdaf5c5f16c3c46d7010767fb834436c20e8022"
+          }
+        },
+        {
+          "client_id": "20649550847-r82qouec81dlqphvle00t60n1376nmb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.debug",
+            "certificate_hash": "897cc8cc4ffbad99896639705e56d67fad7ed71d"
+          }
+        },
         {
           "client_id": "20649550847-o5p4mbnpuctgk3j3o2muf05hkm8uakcj.apps.googleusercontent.com",
           "client_type": 1,
@@ -133,6 +189,30 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "20649550847-m40o1mp7nddalaf3981kgg2dicsrkssp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.release",
+            "certificate_hash": "60dfb3f23990172e8cabbfc168b097ed726f6339"
+          }
+        },
+        {
+          "client_id": "20649550847-be43duhct8iats1nek01tnmf13rht36j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.release",
+            "certificate_hash": "3755965ed961e3fff9469d498454fb1830f88449"
+          }
+        },
+        {
+          "client_id": "20649550847-e41f1na0cm3hlf622a9q1kqas5s25pfd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full.release",
+            "certificate_hash": "dcdaf5c5f16c3c46d7010767fb834436c20e8022"
+          }
+        },
         {
           "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
           "client_type": 3
