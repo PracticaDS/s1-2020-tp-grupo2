@@ -18,10 +18,7 @@ import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditFragment
 import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingViewModel
-import ar.edu.unq.pdes.myprivateblog.services.AnalyticsService
-import ar.edu.unq.pdes.myprivateblog.services.AuthService
-import ar.edu.unq.pdes.myprivateblog.services.FirebaseAnalytics
-import ar.edu.unq.pdes.myprivateblog.services.FirebaseAuthService
+import ar.edu.unq.pdes.myprivateblog.services.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.*
@@ -38,7 +35,8 @@ import javax.inject.Singleton
         ApplicationModule::class,
         MainActivityModule::class,
         LoggerModule::class,
-        AuthModule::class
+        AuthModule::class,
+        EncryptionModule:: class
     ]
 )
 interface ApplicationComponent : AndroidInjector<BaseApplication> {
@@ -173,4 +171,13 @@ abstract class LoginModule {
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     abstract fun bindViewModel(viewmodel: LoginViewModel): ViewModel
+}
+@Module
+open class EncryptionModule {
+
+    @Singleton
+    @Provides
+    open fun provideEncryptionService(context: Context): EncryptionService{
+        return EncryptionService(context)
+    }
 }
