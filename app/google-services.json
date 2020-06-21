@@ -129,6 +129,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "20649550847-71ras04t5ds611lt0ofuconpse1m3kju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full",
+            "certificate_hash": "3755965ed961e3fff9469d498454fb1830f88449"
+          }
+        },
+        {
+          "client_id": "20649550847-kco9iqrcpeiln7gt0gm52mqrom5abd39.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.edu.unq.pdes.myprivateblog.full",
+            "certificate_hash": "60dfb3f23990172e8cabbfc168b097ed726f6339"
+          }
+        },
+        {
           "client_id": "20649550847-k8u3ptrdcmetk4p2bl6qtot8ur91bci4.apps.googleusercontent.com",
           "client_type": 3
         }
