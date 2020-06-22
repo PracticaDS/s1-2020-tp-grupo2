@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_post_edit.*
 class PostCreateFragment : BaseFragment(R.layout.fragment_post_edit) {
     private val viewModel by viewModels<PostCreateViewModel> { viewModelFactory }
 
+    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

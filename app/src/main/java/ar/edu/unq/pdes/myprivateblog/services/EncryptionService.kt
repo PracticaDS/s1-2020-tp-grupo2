@@ -19,9 +19,10 @@ class EncryptionService @Inject constructor(val context: Context) {
     private val keySpecIterationCount = 65536
     private val keySpecKeyLength = 256
     private val cipher = Cipher.getInstance(transformations)
+    private val fileName = "password"
 
-    fun encrypt(password: String, plainText: InputStream, outputStream: OutputStream) {
-
+    fun encrypt(plainText: InputStream, outputStream: OutputStream) {
+        val password = "Password"
         val salt = ByteArray(cipher.blockSize)
         SecureRandom().nextBytes(salt)
 
@@ -44,8 +45,9 @@ class EncryptionService @Inject constructor(val context: Context) {
         }
     }
 
-    fun decrypt(password: String, encryptedInput: InputStream, outputStream: OutputStream) {
+    fun decrypt(encryptedInput: InputStream, outputStream: OutputStream) {
 
+        val password = "Password"
         val salt = ByteArray(cipher.blockSize)
         val iv = ByteArray(cipher.blockSize)
         encryptedInput.use {
@@ -74,4 +76,25 @@ class EncryptionService @Inject constructor(val context: Context) {
         val secretKey: SecretKey = factory.generateSecret(spec)
         return SecretKeySpec(secretKey.encoded, keySpecAlgorithm)
     }
+
+    /*
+   private fun getPassword() : String{
+        var  password = ""
+        context.openFileInput(fileName).use{
+                it -> password = it.bufferedReader().use{
+            it.readText() }
+        }
+       return "Password"
+    }
+
+    fun savePassword(password: String){
+        context.openFileOutput(fileName, Context.MODE_PRIVATE).use{
+                output ->
+            if (output != null) {
+                output.write(password.toByteArray())
+            }
+        }
+    }
+
+     */
 }

@@ -1,5 +1,6 @@
 package ar.edu.unq.pdes.myprivateblog.screens.posts_listing
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
@@ -15,5 +16,6 @@ class PostsListingViewModel @Inject constructor(
     fun isLoggedIn() = authService.isLoggedIn()
     fun logout() = authService.logout()
 
+    @ExperimentalStdlibApi
     val posts: LiveData<List<BlogEntry>> by lazy { postService.getAllBlogEntries() }
 }
