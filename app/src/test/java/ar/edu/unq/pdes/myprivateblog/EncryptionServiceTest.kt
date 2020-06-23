@@ -8,6 +8,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 class EncryptionServiceTest {
 
@@ -35,8 +36,9 @@ class EncryptionServiceTest {
 
         encryptionService.encrypt(inputStream, outputStream)
         val encodeString = outputStream.toByteArray()
-
-        val decryptInputStream = ByteArrayInputStream(encodeString)
+        val encodedString: String = Base64.getEncoder().encodeToString(encodeString)
+        val decodedBytes = Base64.getDecoder().decode(encodedString)
+        val decryptInputStream = ByteArrayInputStream(decodedBytes)
 
         val decryptOutputStream = ByteArrayOutputStream()
 
