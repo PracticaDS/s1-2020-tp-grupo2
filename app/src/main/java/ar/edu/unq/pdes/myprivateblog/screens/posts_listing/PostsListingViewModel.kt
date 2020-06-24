@@ -16,6 +16,6 @@ class PostsListingViewModel @Inject constructor(
     fun isLoggedIn() = authService.isLoggedIn()
     fun logout() = authService.logout()
 
-    @ExperimentalStdlibApi
+
     val posts: LiveData<List<BlogEntry>> by lazy { postService.getAllBlogEntries() }
 }

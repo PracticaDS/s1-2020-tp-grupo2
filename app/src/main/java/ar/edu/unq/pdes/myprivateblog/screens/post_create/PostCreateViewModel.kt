@@ -21,7 +21,6 @@ class PostCreateViewModel @Inject constructor(private val postService: PostServi
 
     var post = 0
 
-    @ExperimentalStdlibApi
     fun createPost() {
         val disposable = postService.create(
             title = titleText.value.toString(),

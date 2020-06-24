@@ -23,7 +23,6 @@ class EncryptionService @Inject constructor(val context: Context) {
     private val keySpecKeyLength = 256
     private val cipher = Cipher.getInstance(transformations)
     private val fileName = "password"
-
     fun encrypt(plainText: InputStream, outputStream: OutputStream) {
 
         val salt = ByteArray(cipher.blockSize)
@@ -49,7 +48,6 @@ class EncryptionService @Inject constructor(val context: Context) {
             }
         }
     }
-
     fun decrypt(encryptedInput: InputStream, outputStream: OutputStream) {
 
         val password = getPassword()
@@ -100,7 +98,8 @@ class EncryptionService @Inject constructor(val context: Context) {
             }
         }
     }
-    @ExperimentalStdlibApi
+    @OptIn(ExperimentalStdlibApi::class)
+
     fun encryptString(string: String): String{
         val inputStream = ByteArrayInputStream(string.encodeToByteArray())
         val outputStream = ByteArrayOutputStream()
@@ -109,7 +108,7 @@ class EncryptionService @Inject constructor(val context: Context) {
         return encodeString
     }
 
-    @ExperimentalStdlibApi
+    @OptIn(ExperimentalStdlibApi::class)
     fun decrytString(string: String): String {
         val decodedBytes = Base64.decode(string, Base64.DEFAULT)
         val decryptInputStream = ByteArrayInputStream(decodedBytes)

@@ -31,31 +31,30 @@ class PostService @Inject constructor(
 
     private fun saveBody(bodyText: String): String {
         val fileName = UUID.randomUUID().toString() + ".body"
-        updateBody(fileName, bodyText)
+        val encodeBody = encrypService.encryptString(bodyText)
+        updateBody(fileName, encodeBody)
         return fileName
     }
 
     private fun readBody(bodyPath: String): String {
         val file = File(context.filesDir, bodyPath)
-        return if (file.exists()) file.readText() else ""
+        return if (file.exists()) encrypService.decrytString(file.readText()) else ""
     }
 
-    @ExperimentalStdlibApi
     fun getById(id: EntityID): Flowable<Pair<BlogEntry, String>> = blogRepository
         .fetchById(id)
-        .map { Pair(decrytBlog(it), readBody(decrytBlog(it).bodyPath!!)) }
+        .map { Pair(decrytBlog(it), readBody(it.bodyPath!!)) }
         .compose(RxSchedulers.flowableAsync())
 
-    @ExperimentalStdlibApi
     fun update(post: BlogEntry, bodyText: String): Completable =
         Flowable.fromCallable {
             updateBody(post.bodyPath!!, bodyText)
             post
         }
-            .flatMapCompletable { blogRepository.updateBlogEntry(encryptBlog(it)) }
+            .flatMapCompletable {
+                blogRepository.updateBlogEntry(encryptBlog(it)) }
             .compose(RxSchedulers.completableAsync())
 
-    @ExperimentalStdlibApi
     fun create(title: String, bodyText: String, cardColor: Int): Flowable<Long> =
         Flowable.fromCallable {
             saveBody(bodyText)
@@ -73,7 +72,7 @@ class PostService @Inject constructor(
         .updateBlogEntry(post.asRestored())
         .compose(RxSchedulers.completableAsync())
 
-    @ExperimentalStdlibApi
+
     fun getAllBlogEntries() =
         blogRepository.getAllBlogEntries().map { posts ->
             posts.map {
@@ -82,16 +81,12 @@ class PostService @Inject constructor(
         }
 
 
-    @ExperimentalStdlibApi
     private fun decrytBlog(blogEntry : BlogEntry): BlogEntry {
-        val title = encrypService.decrytString(blogEntry.title)
-        return BlogEntry(blogEntry.uid,title, blogEntry.bodyPath,
-            blogEntry.imagePath, blogEntry.deleted,
-            blogEntry.date, blogEntry.cardColor, blogEntry.inSync)
+        val titleDecode = encrypService.decrytString(blogEntry.title)
+        return blogEntry.copy(title=titleDecode)
     }
-    @ExperimentalStdlibApi
     private fun encryptBlog(blogEntry : BlogEntry): BlogEntry {
         val encodeTitle = encrypService.encryptString(blogEntry.title)
-        return BlogEntry(title = encodeTitle, bodyPath = blogEntry.bodyPath, cardColor = blogEntry.cardColor)
+        return blogEntry.copy(title= encodeTitle)
     }
 }

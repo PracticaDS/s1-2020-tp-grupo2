@@ -19,7 +19,6 @@ class PostDetailViewModel @Inject constructor(private val postService: PostServi
     var post = MutableLiveData<BlogEntry?>()
     val bodyText = MutableLiveData<String?>()
 
-    @ExperimentalStdlibApi
     fun fetchBlogEntry(id: EntityID) {
         val disposable = postService.getById(id).subscribe {
             post.value = it.first

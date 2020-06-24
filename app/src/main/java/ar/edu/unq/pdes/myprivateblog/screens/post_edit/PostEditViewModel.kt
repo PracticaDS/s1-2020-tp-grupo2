@@ -19,7 +19,7 @@ class PostEditViewModel @Inject constructor(private val postService: PostService
     val post = MutableLiveData<BlogEntry?>()
     val bodyText = MutableLiveData<String?>()
 
-    @ExperimentalStdlibApi
+
     fun fetchBlogEntry(id: EntityID) {
         val disposable = postService.getById(id).subscribe {
             post.value = it.first
@@ -27,7 +27,7 @@ class PostEditViewModel @Inject constructor(private val postService: PostService
         }
     }
 
-    @ExperimentalStdlibApi
+
     fun updatePost() {
         val disposable = postService.update(post.value!!, bodyText.value!!)
             .subscribe { state.value = State.SUCCESS }

@@ -21,7 +21,6 @@ class PostDetailFragment : BaseFragment(R.layout.fragment_post_detail) {
 
     private val args: PostDetailFragmentArgs by navArgs()
 
-    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeBodyWebView()
