@@ -18,6 +18,7 @@ class PostEditFragment : BaseFragment(R.layout.fragment_post_edit) {
 
     private val args: PostEditFragmentArgs by navArgs()
 
+    @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -40,17 +40,19 @@ class PostService @Inject constructor(
         return if (file.exists()) file.readText() else ""
     }
 
+    @ExperimentalStdlibApi
     fun getById(id: EntityID): Flowable<Pair<BlogEntry, String>> = blogRepository
         .fetchById(id)
-        .map { Pair(it, readBody(it.bodyPath!!)) }
+        .map { Pair(decrytBlog(it), readBody(decrytBlog(it).bodyPath!!)) }
         .compose(RxSchedulers.flowableAsync())
 
+    @ExperimentalStdlibApi
     fun update(post: BlogEntry, bodyText: String): Completable =
         Flowable.fromCallable {
             updateBody(post.bodyPath!!, bodyText)
             post
         }
-            .flatMapCompletable { blogRepository.updateBlogEntry(it) }
+            .flatMapCompletable { blogRepository.updateBlogEntry(encryptBlog(it)) }
             .compose(RxSchedulers.completableAsync())
 
     @ExperimentalStdlibApi
@@ -58,9 +60,8 @@ class PostService @Inject constructor(
         Flowable.fromCallable {
             saveBody(bodyText)
         }.flatMapSingle {
-           val encodeTitle = encrypService.encryptString(title)
             blogRepository.createBlogEntry(
-                BlogEntry(title = encodeTitle, bodyPath = it, cardColor = cardColor)
+                encryptBlog(BlogEntry(title = title, bodyPath = it, cardColor = cardColor))
             )
         }.compose(RxSchedulers.flowableAsync())
 
@@ -76,11 +77,21 @@ class PostService @Inject constructor(
     fun getAllBlogEntries() =
         blogRepository.getAllBlogEntries().map { posts ->
             posts.map {
-                val title = encrypService.decrytString(it.title)
-                BlogEntry(it.uid,title, it.bodyPath,
-                    it.imagePath, it.deleted,
-                    it.date, it.cardColor, it.inSync)
+                decrytBlog(it)
             }
         }
 
+
+    @ExperimentalStdlibApi
+    private fun decrytBlog(blogEntry : BlogEntry): BlogEntry {
+        val title = encrypService.decrytString(blogEntry.title)
+        return BlogEntry(blogEntry.uid,title, blogEntry.bodyPath,
+            blogEntry.imagePath, blogEntry.deleted,
+            blogEntry.date, blogEntry.cardColor, blogEntry.inSync)
+    }
+    @ExperimentalStdlibApi
+    private fun encryptBlog(blogEntry : BlogEntry): BlogEntry {
+        val encodeTitle = encrypService.encryptString(blogEntry.title)
+        return BlogEntry(title = encodeTitle, bodyPath = blogEntry.bodyPath, cardColor = blogEntry.cardColor)
+    }
 }
