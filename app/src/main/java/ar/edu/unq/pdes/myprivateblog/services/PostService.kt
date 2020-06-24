@@ -58,10 +58,7 @@ class PostService @Inject constructor(
         Flowable.fromCallable {
             saveBody(bodyText)
         }.flatMapSingle {
-            val inputStream = ByteArrayInputStream(title.encodeToByteArray())
-            val outputStream = ByteArrayOutputStream()
-            encrypService.encrypt( inputStream, outputStream)
-            val encodeTitle = outputStream.toByteArray().toString()
+           val encodeTitle = encrypService.encryptString(title)
             blogRepository.createBlogEntry(
                 BlogEntry(title = encodeTitle, bodyPath = it, cardColor = cardColor)
             )
@@ -79,10 +76,7 @@ class PostService @Inject constructor(
     fun getAllBlogEntries() =
         blogRepository.getAllBlogEntries().map { posts ->
             posts.map {
-                val decryptInputStream = ByteArrayInputStream(it.title.encodeToByteArray())
-                val decryptOutputStream = ByteArrayOutputStream()
-                encrypService.encrypt( decryptInputStream, decryptOutputStream)
-                val title = decryptOutputStream.toByteArray().decodeToString()
+                val title = encrypService.decrytString(it.title)
                 BlogEntry(it.uid,title, it.bodyPath,
                     it.imagePath, it.deleted,
                     it.date, it.cardColor, it.inSync)

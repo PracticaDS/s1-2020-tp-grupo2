@@ -1,6 +1,9 @@
 package ar.edu.unq.pdes.myprivateblog.services
 
 import android.content.Context
+import android.util.Base64
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.SecureRandom
@@ -22,12 +25,14 @@ class EncryptionService @Inject constructor(val context: Context) {
     private val fileName = "password"
 
     fun encrypt(plainText: InputStream, outputStream: OutputStream) {
-        val password = "Password"
+
         val salt = ByteArray(cipher.blockSize)
         SecureRandom().nextBytes(salt)
 
         val iv = ByteArray(cipher.blockSize)
         SecureRandom().nextBytes(iv)
+
+        val password = getPassword()
 
         val skeySpec = getSecretKeySpec(password, salt)
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, IvParameterSpec(iv))
@@ -47,7 +52,7 @@ class EncryptionService @Inject constructor(val context: Context) {
 
     fun decrypt(encryptedInput: InputStream, outputStream: OutputStream) {
 
-        val password = "Password"
+        val password = getPassword()
         val salt = ByteArray(cipher.blockSize)
         val iv = ByteArray(cipher.blockSize)
         encryptedInput.use {
@@ -77,14 +82,14 @@ class EncryptionService @Inject constructor(val context: Context) {
         return SecretKeySpec(secretKey.encoded, keySpecAlgorithm)
     }
 
-    /*
+
    private fun getPassword() : String{
         var  password = ""
         context.openFileInput(fileName).use{
                 it -> password = it.bufferedReader().use{
             it.readText() }
         }
-       return "Password"
+       return password
     }
 
     fun savePassword(password: String){
@@ -95,6 +100,23 @@ class EncryptionService @Inject constructor(val context: Context) {
             }
         }
     }
+    @ExperimentalStdlibApi
+    fun encryptString(string: String): String{
+        val inputStream = ByteArrayInputStream(string.encodeToByteArray())
+        val outputStream = ByteArrayOutputStream()
+        encrypt(inputStream, outputStream)
+        val encodeString = Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+        return encodeString
+    }
 
-     */
+    @ExperimentalStdlibApi
+    fun decrytString(string: String): String {
+        val decodedBytes = Base64.decode(string, Base64.DEFAULT)
+        val decryptInputStream = ByteArrayInputStream(decodedBytes)
+        val decryptOutputStream = ByteArrayOutputStream()
+        decrypt(decryptInputStream, decryptOutputStream)
+        val decodeString = decryptOutputStream.toByteArray().decodeToString()
+        return decodeString
+    }
+
 }

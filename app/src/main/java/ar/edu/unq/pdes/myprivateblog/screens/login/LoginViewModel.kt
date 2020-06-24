@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun savePassword(password: String){
-       // encryptionService.savePassword(password)
+       encryptionService.savePassword(password)
     }
 
 }
