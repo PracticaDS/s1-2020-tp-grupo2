@@ -58,8 +58,11 @@ open class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideBlogEntriesRemoteRepository(authService: AuthService): BlogEntriesRemoteRepository {
-        return BlogEntriesRemoteRepository(Firebase.firestore, authService)
+    fun provideBlogEntriesRemoteRepository(
+        authService: AuthService,
+        fileService: FileService
+    ): BlogEntriesRemoteRepository {
+        return BlogEntriesRemoteRepository(Firebase.firestore, authService, fileService)
     }
 
     @Singleton
@@ -70,8 +73,13 @@ open class ApplicationModule {
     ): BlogEntriesRepository {
         return BlogEntriesRepository(appDatabase.blogEntriesDao(), remoteRepository)
     }
-}
 
+    @Singleton
+    @Provides
+    fun provideFileService(context: Context): FileService {
+        return FileService(context)
+    }
+}
 
 @Module(
     includes = [
