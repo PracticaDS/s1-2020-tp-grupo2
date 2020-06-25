@@ -1,6 +1,6 @@
 package ar.edu.unq.pdes.myprivateblog.services
 
-import android.content.Context
+import androidx.lifecycle.map
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class PostService @Inject constructor(
     private val blogRepository: BlogEntriesRepository,
-    private val encrypService: EncryptionService,
+    private val encryptService: EncryptionService,
     private val fileService: FileService
 ) {
 
@@ -24,10 +24,9 @@ class PostService @Inject constructor(
         Flowable.fromCallable {
             fileService.updateBody(post.bodyPath!!, bodyText)
             post
-        }
-            .flatMapCompletable {
-                blogRepository.updateBlogEntry(encryptBlog(it)) }
-            .compose(RxSchedulers.completableAsync())
+        }.flatMapCompletable {
+            blogRepository.updateBlogEntry(encryptBlog(it))
+        }.compose(RxSchedulers.completableAsync())
 
     fun create(title: String, bodyText: String, cardColor: Int): Flowable<Long> =
         Flowable.fromCallable {
@@ -47,20 +46,17 @@ class PostService @Inject constructor(
         .compose(RxSchedulers.completableAsync())
 
 
-    fun getAllBlogEntries() =
-        blogRepository.getAllBlogEntries().map { posts ->
-            posts.map {
-                decrytBlog(it)
-            }
-        }
-
-
-    private fun decrytBlog(blogEntry : BlogEntry): BlogEntry {
-        val titleDecode = encrypService.decrytString(blogEntry.title)
-        return blogEntry.copy(title=titleDecode)
+    fun getAllBlogEntries() = blogRepository.getAllBlogEntries().map { posts ->
+        posts.map { decrytBlog(it) }
     }
-    private fun encryptBlog(blogEntry : BlogEntry): BlogEntry {
-        val encodeTitle = encrypService.encryptString(blogEntry.title)
-        return blogEntry.copy(title= encodeTitle)
+
+    private fun decrytBlog(blogEntry: BlogEntry): BlogEntry {
+        val decodedTitle = encryptService.decrytString(blogEntry.title)
+        return blogEntry.copy(title = decodedTitle)
+    }
+
+    private fun encryptBlog(blogEntry: BlogEntry): BlogEntry {
+        val encodeTitle = encryptService.encryptString(blogEntry.title)
+        return blogEntry.copy(title = encodeTitle)
     }
 }

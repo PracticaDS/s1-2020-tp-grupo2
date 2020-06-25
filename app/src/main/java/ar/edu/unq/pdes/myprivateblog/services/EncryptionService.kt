@@ -21,7 +21,7 @@ class EncryptionService @Inject constructor(val context: Context,val authService
     private val keySpecAlgorithm: String = "AES"
     private val keyFactoryAlgorithm = "PBKDF2WithHmacSHA1"
     private val transformations: String = "AES/CBC/PKCS5Padding"
-    private val keySpecIterationCount = 65536
+    private val keySpecIterationCount = 1536
     private val keySpecKeyLength = 256
     private val cipher = Cipher.getInstance(transformations)
     private val fileName = "password"
