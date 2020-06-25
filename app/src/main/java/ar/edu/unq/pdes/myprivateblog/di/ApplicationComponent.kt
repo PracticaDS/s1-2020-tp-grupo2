@@ -18,10 +18,7 @@ import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditFragment
 import ar.edu.unq.pdes.myprivateblog.screens.post_edit.PostEditViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingFragment
 import ar.edu.unq.pdes.myprivateblog.screens.posts_listing.PostsListingViewModel
-import ar.edu.unq.pdes.myprivateblog.services.AnalyticsService
-import ar.edu.unq.pdes.myprivateblog.services.AuthService
-import ar.edu.unq.pdes.myprivateblog.services.FirebaseAnalytics
-import ar.edu.unq.pdes.myprivateblog.services.FirebaseAuthService
+import ar.edu.unq.pdes.myprivateblog.services.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.*
@@ -60,8 +57,11 @@ open class ApplicationModule {
 
     @Singleton
     @Provides
-    fun provideBlogEntriesRemoteRepository(authService: AuthService): BlogEntriesRemoteRepository {
-        return BlogEntriesRemoteRepository(Firebase.firestore, authService)
+    fun provideBlogEntriesRemoteRepository(
+        authService: AuthService,
+        fileService: FileService
+    ): BlogEntriesRemoteRepository {
+        return BlogEntriesRemoteRepository(Firebase.firestore, authService, fileService)
     }
 
     @Singleton
@@ -72,8 +72,13 @@ open class ApplicationModule {
     ): BlogEntriesRepository {
         return BlogEntriesRepository(appDatabase.blogEntriesDao(), remoteRepository)
     }
-}
 
+    @Singleton
+    @Provides
+    fun provideFileService(context: Context): FileService {
+        return FileService(context)
+    }
+}
 
 @Module(
     includes = [
