@@ -1,6 +1,8 @@
 package ar.edu.unq.pdes.myprivateblog.services
 
+import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Base64
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -14,7 +16,7 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
-class EncryptionService @Inject constructor(val context: Context) {
+class EncryptionService @Inject constructor(val context: Context,val authService: AuthService) {
 
     private val keySpecAlgorithm: String = "AES"
     private val keyFactoryAlgorithm = "PBKDF2WithHmacSHA1"
@@ -81,25 +83,12 @@ class EncryptionService @Inject constructor(val context: Context) {
     }
 
 
-   private fun getPassword() : String{
-        var  password = ""
-        context.openFileInput(fileName).use{
-                it -> password = it.bufferedReader().use{
-            it.readText() }
-        }
-       return password
-    }
+    private fun getPassword() = authService.getPassword()
 
-    fun savePassword(password: String){
-        context.openFileOutput(fileName, Context.MODE_PRIVATE).use{
-                output ->
-            if (output != null) {
-                output.write(password.toByteArray())
-            }
-        }
-    }
+
+    fun savePassword(password: String) = authService.savePassword(password)
+
     @OptIn(ExperimentalStdlibApi::class)
-
     fun encryptString(string: String): String{
         val inputStream = ByteArrayInputStream(string.encodeToByteArray())
         val outputStream = ByteArrayOutputStream()

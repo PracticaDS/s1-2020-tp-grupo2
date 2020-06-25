@@ -177,7 +177,7 @@ open class EncryptionModule {
 
     @Singleton
     @Provides
-    open fun provideEncryptionService(context: Context): EncryptionService{
-        return EncryptionService(context)
+    open fun provideEncryptionService(context: Context,authService: AuthService): EncryptionService{
+        return EncryptionService(context,authService)
     }
 }

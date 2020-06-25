@@ -1,5 +1,6 @@
 package ar.edu.unq.pdes.myprivateblog.services
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import ar.edu.unq.pdes.myprivateblog.R
@@ -18,10 +19,18 @@ interface AuthService {
     fun signInIntent(): Intent?
     fun login(data: Intent?, onSuccess: () -> Unit, onError: (Exception?) -> Unit)
     fun logout()
+    fun getMail(): String?
+    fun getPassword():String
+    fun savePassword(password:String)
 }
 
 class FakeAuthService : AuthService {
     override fun currentUser(): FirebaseUser? = null
+    override fun getMail(): String? = "a@a.com"
+    override fun getPassword(): String = "123456"
+    override fun savePassword(password: String) {
+    }
+
     override fun isLoggedIn() = true
     override fun signOut() {}
     override fun signInIntent(): Intent? = null
@@ -29,7 +38,8 @@ class FakeAuthService : AuthService {
     override fun logout() {}
 }
 
-class FirebaseAuthService @Inject constructor(context: Context) : AuthService {
+
+class FirebaseAuthService @Inject constructor(val context: Context) : AuthService {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(context.getString(R.string.default_web_client_id))
@@ -37,6 +47,18 @@ class FirebaseAuthService @Inject constructor(context: Context) : AuthService {
     private val googleClient = GoogleSignIn.getClient(context, googleConf)
 
     override fun currentUser() = firebaseAuth.currentUser
+    override fun getMail(): String? = firebaseAuth.currentUser!!.email
+
+    override fun getPassword(): String {
+        val sharedPreferences =context.getSharedPreferences("SP", Activity.MODE_PRIVATE);
+        return sharedPreferences.getString(this.getMail(),null).toString();
+    }
+
+    override fun savePassword(password: String) {
+        val  editor= context.getSharedPreferences("SP",Activity.MODE_PRIVATE).edit();
+        editor.putString(this.getMail(),password);
+        editor.apply();
+    }
 
     override fun isLoggedIn() = currentUser() != null
 

@@ -2,6 +2,7 @@ package ar.edu.unq.pdes.myprivateblog
 
 import android.content.Context
 import ar.edu.unq.pdes.myprivateblog.services.EncryptionService
+import ar.edu.unq.pdes.myprivateblog.services.FakeAuthService
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -18,7 +19,7 @@ class EncryptionServiceTest {
     @Before
     fun setup() {
         context = mock(Context::class.java)
-        encryptionService = EncryptionService(context)
+        encryptionService = EncryptionService(context,FakeAuthService())
     }
 
     @ExperimentalStdlibApi

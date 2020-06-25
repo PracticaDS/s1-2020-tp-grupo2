@@ -26,13 +26,12 @@ class PostService @Inject constructor(
     private fun updateBody(bodyPath: String, bodyText: String) {
         val outputStreamWriter =
             OutputStreamWriter(context.openFileOutput(bodyPath, Context.MODE_PRIVATE))
-        outputStreamWriter.use { it.write(bodyText) }
+        outputStreamWriter.use { it.write(encrypService.encryptString(bodyText)) }
     }
 
     private fun saveBody(bodyText: String): String {
         val fileName = UUID.randomUUID().toString() + ".body"
-        val encodeBody = encrypService.encryptString(bodyText)
-        updateBody(fileName, encodeBody)
+        updateBody(fileName, bodyText)
         return fileName
     }
 
