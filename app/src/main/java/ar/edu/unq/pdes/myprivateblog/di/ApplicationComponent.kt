@@ -8,6 +8,7 @@ import ar.edu.unq.pdes.myprivateblog.MainActivityViewModel
 import ar.edu.unq.pdes.myprivateblog.data.AppDatabase
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRemoteRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
+import ar.edu.unq.pdes.myprivateblog.data.FirebaseRepository
 import ar.edu.unq.pdes.myprivateblog.screens.login.LoginFragment
 import ar.edu.unq.pdes.myprivateblog.screens.login.LoginViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.password_encrypt.PasswordEncryptFragment
@@ -38,7 +39,7 @@ import javax.inject.Singleton
         MainActivityModule::class,
         LoggerModule::class,
         AuthModule::class,
-        EncryptionModule:: class
+        EncryptionModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<BaseApplication> {
@@ -60,11 +61,19 @@ open class ApplicationModule {
 
     @Singleton
     @Provides
+    fun provideFirebaseRepository(
+        authService: AuthService
+    ): FirebaseRepository {
+        return FirebaseRepository(Firebase.firestore, authService)
+    }
+
+    @Singleton
+    @Provides
     fun provideBlogEntriesRemoteRepository(
-        authService: AuthService,
+        firebaseRepository: FirebaseRepository,
         fileService: FileService
     ): BlogEntriesRemoteRepository {
-        return BlogEntriesRemoteRepository(Firebase.firestore, authService, fileService)
+        return BlogEntriesRemoteRepository(firebaseRepository, fileService)
     }
 
     @Singleton
@@ -183,13 +192,17 @@ abstract class LoginModule {
     @ViewModelKey(LoginViewModel::class)
     abstract fun bindViewModel(viewmodel: LoginViewModel): ViewModel
 }
+
 @Module
 open class EncryptionModule {
 
     @Singleton
     @Provides
-    open fun provideEncryptionService(context: Context,authService: AuthService): EncryptionService{
-        return EncryptionService(context,authService)
+    open fun provideEncryptionService(
+        context: Context,
+        authService: AuthService
+    ): EncryptionService {
+        return EncryptionService(context, authService)
     }
 }
 
