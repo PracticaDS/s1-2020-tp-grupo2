@@ -112,13 +112,19 @@ workflows:
             set -e
             # debug log
             set -x
-            curl -X POST -H "Content-Type: application/json" -d "{\"text\": \"Build Error :( \n build: $BITRISE_BUILD_NUMBER \n status: $BITRISE_BUILD_STATUS\"}" $SLACK_URL
+            curl -X POST -H "Content-Type: application/json" -d "{\"blocks\": [{\"type\": \"section\",\"text\": {\"type\": \"mrkdwn\",\"text\": \"<${BITRISE_APP_URL}|*${BITRISE_APP_TITLE}*> [${BITRISE_GIT_BRANCH}] \n :broken_heart: _*Build failed!!*_  \n :hammer: <${BITRISE_BUILD_URL}|Build> \"},\"accessory\": {\"type\": \"image\",\"image_url\": \"https://lh3.googleusercontent.com/gXxKiHyV5rg5CwJudff7HQOPTeI95tNET7kErJU_yLrC5bGl3Y63PjLkw6svFWmcLg\",\"alt_text\": \"logo\"}}]}" $SLACK_URL
     - gradle-runner@1:
         inputs:
         - gradlew_path: "./gradlew"
         - app_file_include_filter: "*.apk"
         - test_apk_file_include_filter: ''
         - gradle_task: assembleDebug
+    - android-build@0:
+        inputs:
+        - variant: Debug
+        - module: app
+    - sign-apk@1.4: {}
+    - deploy-to-bitrise-io@1: {}
     - script@1:
         inputs:
         - content: |
@@ -127,13 +133,8 @@ workflows:
             set -e
             # debug log
             set -x
-            curl -X POST -H "Content-Type: application/json" -d "{\"text\": \"Build Success! \n build: $BITRISE_BUILD_NUMBER \n status: $BITRISE_BUILD_STATUS\"}" $SLACK_URL
+            curl -X POST -H "Content-Type: application/json" -d "{\"blocks\": [{\"type\": \"section\",\"text\": {\"type\": \"mrkdwn\",\"text\": \"<${BITRISE_APP_URL}|*${BITRISE_APP_TITLE}*> [${BITRISE_GIT_BRANCH}] \n :green_heart: _*Build Success!!*_ \n :hammer: <${BITRISE_BUILD_URL}|Build> \n :iphone: <${BITRISE_PUBLIC_INSTALL_PAGE_URL}|DOWNLOAD APK> \"},\"accessory\": {\"type\": \"image\",\"image_url\": \"https://lh3.googleusercontent.com/gXxKiHyV5rg5CwJudff7HQOPTeI95tNET7kErJU_yLrC5bGl3Y63PjLkw6svFWmcLg\",\"alt_text\": \"logo\"}}]}" $SLACK_URL
         title: Send build success notification to slack
-    - android-build@0:
-        inputs:
-        - variant: Debug
-        - module: app
-    - deploy-to-bitrise-io@1: {}
     - cache-push@2: {}
     envs:
     - opts:
@@ -214,3 +215,6 @@ app:
   - opts:
       is_expand: false
     MODULE: app
+  - opts:
+      is_expand: false
+    TEST_RUNNER: androidx.test.ext.junit.runners.AndroidJUnit4
