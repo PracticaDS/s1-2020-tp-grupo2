@@ -32,6 +32,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun isPasswordSave(): Boolean {
-        return authService.getPassword().isNullOrEmpty()
+        return !authService.getPassword().contentEquals("null")
     }
 }
