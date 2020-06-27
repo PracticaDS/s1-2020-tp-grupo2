@@ -10,8 +10,35 @@
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
+            android:id="@+id/nav_action_password_encrypt"
+            app:destination="@id/passwordEncryptFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
             android:id="@+id/nav_action_post_listing"
             app:destination="@id/postsListingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordEncryptFragment"
+        android:name="ar.edu.unq.pdes.myprivateblog.screens.password_encrypt.PasswordEncryptFragment"
+        android:label="PasswordEncryptFragment"
+        tools:layout="@layout/fragment_password_encrypt">
+        <action
+            android:id="@+id/nav_action_post_listing"
+            app:destination="@id/postsListingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/nav_action_login"
+            app:destination="@id/loginFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

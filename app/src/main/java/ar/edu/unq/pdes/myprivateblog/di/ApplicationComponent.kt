@@ -10,6 +10,8 @@ import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRemoteRepository
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntriesRepository
 import ar.edu.unq.pdes.myprivateblog.screens.login.LoginFragment
 import ar.edu.unq.pdes.myprivateblog.screens.login.LoginViewModel
+import ar.edu.unq.pdes.myprivateblog.screens.password_encrypt.PasswordEncryptFragment
+import ar.edu.unq.pdes.myprivateblog.screens.password_encrypt.PasswordEncryptViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateFragment
 import ar.edu.unq.pdes.myprivateblog.screens.post_create.PostCreateViewModel
 import ar.edu.unq.pdes.myprivateblog.screens.post_detail.PostDetailFragment
@@ -87,7 +89,8 @@ open class ApplicationModule {
         PostDetailModule::class,
         PostEditModule::class,
         PostCreateModule::class,
-        LoginModule::class
+        LoginModule::class,
+        PasswordEncryptModule::class
     ]
 )
 abstract class MainActivityModule {
@@ -188,4 +191,16 @@ open class EncryptionModule {
     open fun provideEncryptionService(context: Context,authService: AuthService): EncryptionService{
         return EncryptionService(context,authService)
     }
+}
+
+@Module
+abstract class PasswordEncryptModule {
+
+    @ContributesAndroidInjector(modules = [ViewModelBuilder::class])
+    internal abstract fun passwordEncryptFragment(): PasswordEncryptFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PasswordEncryptViewModel::class)
+    abstract fun bindViewModel(viewmodel: PasswordEncryptViewModel): ViewModel
 }

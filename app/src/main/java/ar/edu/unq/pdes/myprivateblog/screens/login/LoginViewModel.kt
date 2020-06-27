@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import ar.edu.unq.pdes.myprivateblog.services.AuthService
 import ar.edu.unq.pdes.myprivateblog.services.EncryptionService
-import java.net.PasswordAuthentication
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
@@ -32,8 +31,7 @@ class LoginViewModel @Inject constructor(
         authService.login(data, onSuccess, onError)
     }
 
-    fun savePassword(password: String){
-       encryptionService.savePassword(password)
+    fun isPasswordSave(): Boolean {
+        return authService.getPassword().isNullOrEmpty()
     }
-
 }

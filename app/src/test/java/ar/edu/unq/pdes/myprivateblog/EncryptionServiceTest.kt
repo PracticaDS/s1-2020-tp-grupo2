@@ -26,8 +26,6 @@ class EncryptionServiceTest {
     @Test
     fun whenEncryptingAString_itShouldBeTheSameAfterDecrypting() {
         val someString = "Prueba"
-        val password = "Password"
-        //  encryptionService.savePassword(password)
 
         val inputStream = ByteArrayInputStream(
             someString.toByteArray()

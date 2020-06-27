@@ -1,8 +1,6 @@
 package ar.edu.unq.pdes.myprivateblog.services
 
-import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Base64
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -24,7 +22,7 @@ class EncryptionService @Inject constructor(val context: Context,val authService
     private val keySpecIterationCount = 1536
     private val keySpecKeyLength = 256
     private val cipher = Cipher.getInstance(transformations)
-    private val fileName = "password"
+
     fun encrypt(plainText: InputStream, outputStream: OutputStream) {
 
         val salt = ByteArray(cipher.blockSize)
@@ -50,6 +48,7 @@ class EncryptionService @Inject constructor(val context: Context,val authService
             }
         }
     }
+
     fun decrypt(encryptedInput: InputStream, outputStream: OutputStream) {
 
         val password = getPassword()

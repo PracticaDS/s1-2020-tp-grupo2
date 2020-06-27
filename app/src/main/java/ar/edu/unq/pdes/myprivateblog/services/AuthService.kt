@@ -1,6 +1,5 @@
 package ar.edu.unq.pdes.myprivateblog.services
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import ar.edu.unq.pdes.myprivateblog.R
@@ -50,12 +49,12 @@ class FirebaseAuthService @Inject constructor(val context: Context) : AuthServic
     override fun getMail(): String? = firebaseAuth.currentUser!!.email
 
     override fun getPassword(): String {
-        val sharedPreferences =context.getSharedPreferences("SP", Activity.MODE_PRIVATE);
+        val sharedPreferences = context.getSharedPreferences("SP", Context.MODE_PRIVATE);
         return sharedPreferences.getString(this.getMail(),null).toString();
     }
 
     override fun savePassword(password: String) {
-        val  editor= context.getSharedPreferences("SP",Activity.MODE_PRIVATE).edit();
+        val  editor = context.getSharedPreferences("SP", Context.MODE_PRIVATE).edit();
         editor.putString(this.getMail(),password);
         editor.apply();
     }
