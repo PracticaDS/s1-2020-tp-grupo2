@@ -1,11 +1,14 @@
 package ar.edu.unq.pdes.myprivateblog.screens.posts_listing
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.annotation.NonNull
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -19,14 +22,10 @@ import ar.edu.unq.pdes.myprivateblog.R
 import ar.edu.unq.pdes.myprivateblog.data.BlogEntry
 import ar.edu.unq.pdes.myprivateblog.data.EntityID
 import kotlinx.android.synthetic.main.fragment_posts_listing.*
-import java.io.BufferedReader
-import java.io.FileInputStream
-import java.io.InputStreamReader
 
 
 class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
     private val viewModel by viewModels<PostsListingViewModel> { viewModelFactory }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,6 +52,19 @@ class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
         createMenOptions()
+    }
+
+    override fun onAttach(@NonNull context: Context) {
+        super.onAttach(context)
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
+            true
+        ) {
+            override fun handleOnBackPressed() { }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            callback
+        )
     }
 
     private fun createMenOptions(){
