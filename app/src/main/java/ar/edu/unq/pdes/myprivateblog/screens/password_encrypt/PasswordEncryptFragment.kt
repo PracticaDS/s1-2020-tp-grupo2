@@ -23,6 +23,8 @@ class PasswordEncryptFragment : BaseFragment(R.layout.fragment_password_encrypt)
         buttonEncrypt.setOnClickListener {
             savePassword()
         }
+
+        exitApplication()
     }
 
     private fun goToPostListing() {

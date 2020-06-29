@@ -18,13 +18,15 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.isLoggedIn()) {
-            goToPostListing()
+            goToPasswordEncryptOrPostListing()
         } else {
             viewModel.signOut()
             googleButton.setOnClickListener {
                 loginUser()
             }
         }
+
+        exitApplication()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
