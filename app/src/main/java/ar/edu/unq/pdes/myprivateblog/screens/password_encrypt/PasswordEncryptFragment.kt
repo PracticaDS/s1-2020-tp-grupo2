@@ -1,12 +1,9 @@
 package ar.edu.unq.pdes.myprivateblog.screens.password_encrypt
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.annotation.NonNull
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
@@ -26,19 +23,8 @@ class PasswordEncryptFragment : BaseFragment(R.layout.fragment_password_encrypt)
         buttonEncrypt.setOnClickListener {
             savePassword()
         }
-    }
 
-    override fun onAttach(@NonNull context: Context) {
-        super.onAttach(context)
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
-            true
-        ) {
-            override fun handleOnBackPressed() { }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            callback
-        )
+        exitApplication()
     }
 
     private fun goToPostListing() {

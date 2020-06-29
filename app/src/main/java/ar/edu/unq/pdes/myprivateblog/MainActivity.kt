@@ -2,7 +2,6 @@ package ar.edu.unq.pdes.myprivateblog
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -28,19 +27,6 @@ class MainActivity : DaggerAppCompatActivity() {
         AndroidThreeTen.init(this);
 
         setContentView(R.layout.activity_main)
-    }
-
-    private var doubleBackToExitPressedOnce = false
-    override fun onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed()
-            super.onStop()
-            return
-        }
-
-        this.doubleBackToExitPressedOnce = true
-
-        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()

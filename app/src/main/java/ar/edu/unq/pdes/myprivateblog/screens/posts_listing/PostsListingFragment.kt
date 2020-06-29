@@ -1,14 +1,11 @@
 package ar.edu.unq.pdes.myprivateblog.screens.posts_listing
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
-import androidx.annotation.NonNull
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -51,23 +48,12 @@ class PostsListingFragment : BaseFragment(R.layout.fragment_posts_listing) {
             }
             posts_list_recyclerview.layoutManager = LinearLayoutManager(context)
         })
-        createMenOptions()
+        createMenuOptions()
+
+        exitApplication()
     }
 
-    override fun onAttach(@NonNull context: Context) {
-        super.onAttach(context)
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
-            true
-        ) {
-            override fun handleOnBackPressed() { }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            callback
-        )
-    }
-
-    private fun createMenOptions(){
+    private fun createMenuOptions(){
         val toolbar = getMainActivity().findViewById<Toolbar>(R.id.toolbar)
         toolbar.inflateMenu(R.menu.menu)
         toolbar.setOnMenuItemClickListener {
