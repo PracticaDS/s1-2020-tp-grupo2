@@ -17,12 +17,14 @@ class PostService @Inject constructor(
 
     fun getById(id: EntityID): Flowable<Pair<BlogEntry, String>> = blogRepository
         .fetchById(id)
-        .map { Pair(decrytBlog(it), fileService.readBody(it.bodyPath!!)) }
+        .map {
+            Pair(decrytBlog(it), encryptService.decrytString(fileService.readBody(it.bodyPath!!)))
+        }
         .compose(RxSchedulers.flowableAsync())
 
     fun update(post: BlogEntry, bodyText: String): Completable =
         Flowable.fromCallable {
-            fileService.updateBody(post.bodyPath!!, bodyText)
+            fileService.updateBody(post.bodyPath!!, encryptService.encryptString(bodyText))
             post
         }.flatMapCompletable {
             blogRepository.updateBlogEntry(encryptBlog(it))
@@ -30,7 +32,7 @@ class PostService @Inject constructor(
 
     fun create(title: String, bodyText: String, cardColor: Int): Flowable<Long> =
         Flowable.fromCallable {
-            fileService.saveBody(bodyText)
+            fileService.saveBody(encryptService.encryptString(bodyText))
         }.flatMapSingle {
             blogRepository.createBlogEntry(
                 encryptBlog(BlogEntry(title = title, bodyPath = it, cardColor = cardColor))
