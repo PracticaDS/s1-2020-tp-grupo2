@@ -2,6 +2,7 @@ package ar.edu.unq.pdes.myprivateblog.services
 
 import android.content.Context
 import android.util.Base64
+import ar.edu.unq.pdes.myprivateblog.data.FirebaseRepository
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -14,7 +15,7 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
-class EncryptionService @Inject constructor(val context: Context,val authService: AuthService) {
+class EncryptionService @Inject constructor(val context: Context,val authService: AuthService, val firebaseRepository: FirebaseRepository) {
 
     private val keySpecAlgorithm: String = "AES"
     private val keyFactoryAlgorithm = "PBKDF2WithHmacSHA1"
@@ -85,8 +86,6 @@ class EncryptionService @Inject constructor(val context: Context,val authService
     private fun getPassword() = authService.getPassword()
 
 
-    fun savePassword(password: String) = authService.savePassword(password)
-
     @OptIn(ExperimentalStdlibApi::class)
     fun encryptString(string: String): String{
         val inputStream = ByteArrayInputStream(string.encodeToByteArray())
@@ -106,4 +105,27 @@ class EncryptionService @Inject constructor(val context: Context,val authService
         return decodeString
     }
 
+    fun savePassword(password: String,  onSuccess: () -> Unit, onErrorPasswordInvalid: () -> Unit, onErrorGetPassord: () -> Unit) {
+        val hasPassword = password.hashCode().toString()
+        firebaseRepository.getPassword({result->savePasswordOnCellphone(hasPassword, result, onSuccess, onErrorPasswordInvalid, onErrorGetPassord)}, {onErrorGetPassord()})
+    }
+
+    private fun savePasswordOnCellphone(passwordUser: String, passwordSave: String?,  onSuccess: () -> Unit, onErrorPasswordInvalid: () -> Unit, onErrorGetPassord: () -> Unit){
+        if(passwordSave.isNullOrEmpty()){
+            savePasswordOnFirebase(passwordUser, onSuccess, onErrorGetPassord)
+        } else if (passwordUser.equals(passwordSave)){
+            save(passwordUser, onSuccess)
+        } else {
+            onErrorPasswordInvalid()
+        }
+    }
+
+    private fun savePasswordOnFirebase(password: String, onSuccess: () -> Unit, onErrorGetPassord: () -> Unit){
+        firebaseRepository.savePassword(password, {save(password, onSuccess)}, {onErrorGetPassord()} )
+    }
+
+    private fun save(password: String, onSuccess: () -> Unit){
+        authService.savePassword(password)
+        onSuccess()
+    }
 }

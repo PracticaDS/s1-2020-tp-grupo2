@@ -200,9 +200,10 @@ open class EncryptionModule {
     @Provides
     open fun provideEncryptionService(
         context: Context,
-        authService: AuthService
+        authService: AuthService,
+        firebaseRepository: FirebaseRepository
     ): EncryptionService {
-        return EncryptionService(context, authService)
+        return EncryptionService(context, authService, firebaseRepository)
     }
 }
 

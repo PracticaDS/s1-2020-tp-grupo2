@@ -37,9 +37,4 @@ class FirebaseRepository(
             .addOnSuccessListener { result -> onSuccess(result.getString(PASSWORD_FIELD)) }
             .addOnFailureListener { e -> onError(e) }
     }
-
-//    fun asd(){
-//        savePassword("asdasd", {  }, { e -> e.message })
-//        getPassword({ password -> password == }, { e -> })
-//    }
 }

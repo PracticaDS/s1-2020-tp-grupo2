@@ -14,7 +14,7 @@ class PasswordEncryptViewModel @Inject constructor(
 
     fun isLoggedIn() = authService.isLoggedIn()
 
-    fun savePassword(password: String){
-        encryptionService.savePassword(password)
+    fun savePassword(password: String, onSuccess: () -> Unit, onErrorPasswordInvalid: () -> Unit, onErrorGetPassord: () -> Unit){
+        encryptionService.savePassword(password, onSuccess, onErrorPasswordInvalid, onErrorGetPassord)
     }
 }

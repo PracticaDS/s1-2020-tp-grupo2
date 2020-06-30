@@ -7,6 +7,8 @@
     <string name="text_empty_login">Login!</string>
     <string name="error_login">Error al autenticar</string>
     <string name="error_pasword">Debe ingresar una contraseña de entre 6 y 8 caracteres.</string>
+    <string name="error_pasword_incorrect">La contraseña ingresada es incorrecta.</string>
+    <string name="error_firebase_pasword">En estos momentos no se puede validar la contraseña. Por favor intente más tarde</string>
     <string name="success_login">Login Exitoso</string>
     <string name="app_icon">Icono app</string>
     <string name="preference_file_key">FILE_KEY</string>

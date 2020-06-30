@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorInt
 import androidx.lifecycle.ViewModelProvider
@@ -51,6 +52,10 @@ abstract class BaseFragment(private val layoutId: Int) : DaggerFragment() {
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    protected fun showMessage(message: String) {
+        Toast.makeText(getMainActivity(), message, Toast.LENGTH_SHORT).show()
     }
 }
 

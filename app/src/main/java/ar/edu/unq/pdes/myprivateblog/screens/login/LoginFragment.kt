@@ -3,7 +3,6 @@ package ar.edu.unq.pdes.myprivateblog.screens.login
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
@@ -37,10 +36,6 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
             { goToPasswordEncryptOrPostListing() },
             { showMessage(getString(R.string.error_login)) }
         )
-    }
-
-    private fun showMessage(message: String) {
-        Toast.makeText(getMainActivity(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun goToPostListing() {

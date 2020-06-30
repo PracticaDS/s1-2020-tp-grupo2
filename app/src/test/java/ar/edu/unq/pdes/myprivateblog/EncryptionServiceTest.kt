@@ -1,6 +1,7 @@
 package ar.edu.unq.pdes.myprivateblog
 
 import android.content.Context
+import ar.edu.unq.pdes.myprivateblog.data.FirebaseRepository
 import ar.edu.unq.pdes.myprivateblog.services.EncryptionService
 import ar.edu.unq.pdes.myprivateblog.services.FakeAuthService
 import org.junit.Assert.assertEquals
@@ -15,11 +16,13 @@ class EncryptionServiceTest {
 
     private lateinit var encryptionService: EncryptionService
     private lateinit var context: Context
+    private lateinit var firebaseRepository: FirebaseRepository
 
     @Before
     fun setup() {
         context = mock(Context::class.java)
-        encryptionService = EncryptionService(context,FakeAuthService())
+        firebaseRepository = mock(FirebaseRepository::class.java)
+        encryptionService = EncryptionService(context,FakeAuthService(), firebaseRepository)
     }
 
     @ExperimentalStdlibApi

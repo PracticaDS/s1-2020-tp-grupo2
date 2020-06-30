@@ -3,7 +3,6 @@ package ar.edu.unq.pdes.myprivateblog.screens.password_encrypt
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ar.edu.unq.pdes.myprivateblog.BaseFragment
@@ -36,18 +35,20 @@ class PasswordEncryptFragment : BaseFragment(R.layout.fragment_password_encrypt)
         val data: String = editText.text.toString()
 
         if(data.isNotEmpty() && data.length >= 6){
-            viewModel.savePassword(data)
-            goToPostListing()
+           save(data)
         } else {
             showMessage(getString(R.string.error_pasword))
         }
     }
 
-    private fun showMessage(message: String) {
-        Toast.makeText(getMainActivity(), message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun goToUserLogin(){
         findNavController().navigate(PasswordEncryptFragmentDirections.navActionLogin())
+    }
+
+    private fun save(password: String){
+        viewModel.savePassword(password,
+            { goToPostListing()},
+            {showMessage(getString(R.string.error_pasword_incorrect))},
+            {showMessage(getString(R.string.error_firebase_pasword))})
     }
 }
