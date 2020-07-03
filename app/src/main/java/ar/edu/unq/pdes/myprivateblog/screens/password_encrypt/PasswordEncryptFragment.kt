@@ -32,13 +32,8 @@ class PasswordEncryptFragment : BaseFragment(R.layout.fragment_password_encrypt)
 
     private fun savePassword(){
         val editText: EditText = getMainActivity().findViewById(R.id.password)
-        val data: String = editText.text.toString()
-
-        if(data.isNotEmpty() && data.length >= 6){
-           save(data)
-        } else {
-            showMessage(getString(R.string.error_pasword))
-        }
+        val password: String = editText.text.toString()
+        viewModel.isPasswordAccept(password,{save(password)}, {showMessage(getString(R.string.error_pasword))})
     }
 
     private fun goToUserLogin(){

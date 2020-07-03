@@ -17,4 +17,5 @@
     <string name="guardar">Guardar</string>
     <string name="textEncrypt"> Tu seguridad es importante para nosotros por eso te pedimos que ingreses una contraseña para proteger tu información </string>
     <string name="textTip"> Sugerencia: la contraseña elegida debe ser fácil de recordar </string>
+    <string name="empty_post_save"> Debe ingresar al menos un título</string>
 </resources>
