@@ -17,4 +17,12 @@ class PasswordEncryptViewModel @Inject constructor(
     fun savePassword(password: String, onSuccess: () -> Unit, onErrorPasswordInvalid: () -> Unit, onErrorGetPassord: () -> Unit){
         encryptionService.savePassword(password, onSuccess, onErrorPasswordInvalid, onErrorGetPassord)
     }
+
+    fun isPasswordAccept(password: String, onSuccess: () -> Unit, onError: () -> Unit){
+        if(password.isNotEmpty() && password.length >= 6){
+           onSuccess()
+        } else {
+           onError()
+        }
+    }
 }

@@ -28,10 +28,12 @@ class PostEditViewModel @Inject constructor(private val postService: PostService
     }
 
 
-    fun updatePost() {
-        val disposable = postService.update(post.value!!, bodyText.value!!)
-            .subscribe { state.value = State.SUCCESS }
-        analytics.logEvent(TypeEventAnalytics.EDIT_POST)
+    fun updatePost(onError: () -> Unit) {
+        if(!isPostEmpty()){
+            update()
+        } else {
+            onError()
+        }
     }
 
     fun updateTitle(title: String) {
@@ -40,5 +42,15 @@ class PostEditViewModel @Inject constructor(private val postService: PostService
 
     fun updateColor(color: Int) {
         post.value = post.value?.copy(cardColor = color)
+    }
+
+    fun update(){
+        val disposable = postService.update(post.value!!, bodyText.value!!)
+            .subscribe { state.value = State.SUCCESS }
+        analytics.logEvent(TypeEventAnalytics.EDIT_POST)
+    }
+
+    private  fun isPostEmpty() : Boolean{
+        return post.value?.title.isNullOrEmpty() && bodyText.value.toString().isEmpty()
     }
 }

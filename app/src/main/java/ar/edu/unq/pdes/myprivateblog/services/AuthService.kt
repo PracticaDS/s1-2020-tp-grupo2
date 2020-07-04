@@ -5,6 +5,7 @@ import android.content.Intent
 import ar.edu.unq.pdes.myprivateblog.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -81,7 +82,7 @@ class FirebaseAuthService @Inject constructor(val context: Context) : AuthServic
                     if (it.isSuccessful) onSuccess() else onError(it.exception)
                 }
         } catch (e: ApiException) {
-            onError(e)
+            if (e.statusCode != GoogleSignInStatusCodes.SIGN_IN_CANCELLED) onError(e)
         }
     }
 

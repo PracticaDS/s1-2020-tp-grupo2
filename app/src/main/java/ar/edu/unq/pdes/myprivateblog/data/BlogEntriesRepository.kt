@@ -13,7 +13,7 @@ class BlogEntriesRepository(
     private var lastSync = OffsetDateTime.now().minusDays(1)
 
     private fun syncPosts(posts: List<BlogEntry>) {
-        if (lastSync.plusMinutes(15).isAfter(OffsetDateTime.now())) return
+        if (lastSync.plusMinutes(5).isAfter(OffsetDateTime.now())) return
         lastSync = OffsetDateTime.now()
         val disposable = Flowable.just(posts)
             .flatMap { Flowable.fromIterable(it) }

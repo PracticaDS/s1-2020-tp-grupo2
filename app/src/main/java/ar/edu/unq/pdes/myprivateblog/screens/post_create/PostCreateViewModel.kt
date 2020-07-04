@@ -21,7 +21,19 @@ class PostCreateViewModel @Inject constructor(private val postService: PostServi
 
     var post = 0
 
-    fun createPost() {
+    fun createPost(onError: () -> Unit) {
+      if(isPostEmpty()){
+          onError()
+      } else {
+          create()
+      }
+    }
+
+    private  fun isPostEmpty() : Boolean{
+        return titleText.value.toString().isEmpty() && bodyText.value.toString().isEmpty()
+    }
+
+    private fun  create(){
         val disposable = postService.create(
             title = titleText.value.toString(),
             bodyText = bodyText.value.toString(),

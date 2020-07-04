@@ -52,7 +52,8 @@ class PostEditFragment : BaseFragment(R.layout.fragment_post_edit) {
         }
         color_picker.onColorSelectionListener = { viewModel.updateColor(it) }
         btn_save.setOnClickListener {
-            viewModel.updatePost() }
+            viewModel.updatePost({showMessage(getString(R.string.empty_post_save))})
+        }
         btn_close.setOnClickListener { closeAndGoBack() }
 
         context?.apply { setAztecToolbarClickListener(this, body, source, formatting_toolbar) }
